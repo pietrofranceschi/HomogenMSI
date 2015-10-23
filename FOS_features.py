@@ -25,7 +25,7 @@ def Firstorderstatistics(mask):
             Mask = np.genfromtxt(sname + '_mim.msk',dtype=float,delimiter=',')
         if mask == 'tic':
             print('<--- Using TIC tissue mask -->')
-            Mask = np.genfromtxt(sname + '_mim.msk',dtype=float,delimiter=',')
+            Mask = np.genfromtxt(sname + '_tic.msk',dtype=float,delimiter=',')
         tissueImg = np.multiply(Img,Mask)
         tissue = tissueImg[np.where(tissueImg>0)]
         FOS = {}
@@ -40,13 +40,13 @@ def Firstorderstatistics(mask):
         FOS['skewness'] = stats.skew(tissue.flatten())
         stat.append(FOS)
     output = pd.DataFrame(stat)
-    output.to_csv("FOS.csv", sep=',')
+    output.to_csv("FOS_features.csv", sep=',')
 
 
 
 def main():    
     parser = argparse.ArgumentParser(description="Calculates the first order statistics of a series of .sim images. The outputs are stored as a csv")
-    parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for FOS calculations")
+    parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for FOS calculations. Available options 'drug', 'tic', 'mim'. (Default: 'drug')")
     args = parser.parse_args()
     Firstorderstatistics(mask = args.mask)
         

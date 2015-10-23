@@ -96,6 +96,7 @@ def GLCMfeatures(d,ngrl,mask):
     #Start calculation for individual dataset'''
     for f in selionimg:
         sname = f[:-4]
+        print('PROCESSING %s' %sname)
         Img = np.genfromtxt(f,dtype=float,delimiter=',')
         if mask == 'drug':
             print('<--- Using drug mask -->')
@@ -107,12 +108,12 @@ def GLCMfeatures(d,ngrl,mask):
             print('<--- Using TIC tissue mask -->')
             Mask = np.genfromtxt(sname + '_mim.msk',dtype=float,delimiter=',')
          ## rescaling to the desired number of gray levels
-         if (ngrl != 0):
+        if (ngrl != 0):
             m = ngrl/Img.max()
             scaledImg = Img*m
             binnedImg = np.rint(scaledImg)
             Img = (binnedImg + 1)  
-         else:
+        else:
             Img = np.sqrt(Img)
             Img = np.rint(Img)
             Img = (Img +1)
@@ -121,16 +122,16 @@ def GLCMfeatures(d,ngrl,mask):
         GLCM = {}
         #GLCM calculation for individual distance value in all four directions
         feat_dist=[]         
-        for i in range(0,len(d)):                                     
+        for i in d:                                     
             feat_angle = []
-            for j in range(0,len(a)):                               # for loop on angle parameter
-                g = greycomatrix(tissue,[d[i]],[a[j]])
+            for j in a:                               # for loop on angle parameter
+                g = greycomatrix(tissue,[i],[j])
                 g = g.reshape(g.shape[0],g.shape[1])
                 g[0,0] = 0                                         # providing zero value to gray level corresponding to background region
                 g = g.astype(np.float)
                 g = (g/np.sum(g))                                  # Normalization of co-occurrence matrix
                 feat_angle.append(gray_features(g))                # Extract feature values for co-coccurrence matrix g
-               feat_angle = np.array(feat_angle) 
+            feat_angle = np.array(feat_angle) 
             feat_dist.append(np.mean(feat_angle,axis=0))            # Averaging over all four directions  
             ## collect the GCLM features for all the images
         GLCM['Id']                      = sname
@@ -149,17 +150,17 @@ def GLCMfeatures(d,ngrl,mask):
         GLCM['iMC2']                    = (np.mean(feat_dist,axis=0))[12]
         stat.append(GLCM)
     output = pd.DataFrame(stat)
-    output.to_csv("GLCM.csv", sep=',')
+    output.to_csv("GLCM_feaures.csv", sep=',')
 
 
 def main():    
     parser = argparse.ArgumentParser(description="Calculates the first order statistics of a series of .sim images. The outputs are stored as a csv")
-    parser.add_argument('-d',dest="distance",type = int,nargs='+', default=1, help="Distance parameter for co-occurrence matrix calculation")
-    parser.add_argument('-n', dest="nugrlvl", type=int, default=0, help="Define nu of gray-level for co-occurrence matrix calculation")
-    parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for GCLM calculations")
+    parser.add_argument('-d',dest="distance",type = int,nargs='+', default=[1], help="Distance parameter for co-occurrence matrix calculation")
+    parser.add_argument('-n', dest="nugrlvl", type=int, default=32, help="Define number of gray-level for co-occurrence matrix calculation (Default: 32)")
+    parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for GCLM calculations. Available options 'drug', 'tic', 'mim'. (Default: 'drug')")
     args = parser.parse_args()
     GLCMfeatures(d = args.distance,ngrl = args.nugrlvl, mask = args.mask)
-    
+    #print(args)
            
 if __name__ == '__main__':
    main()

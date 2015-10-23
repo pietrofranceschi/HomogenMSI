@@ -16,7 +16,8 @@ def Sizezonematrixfeatures(ngrl,mask):
     selionimg = grep(dircontent,'.sim')
     fielid = []; szmfeature=[]
     for f in selionimg:
-      sname = f[:-4] 
+      sname = f[:-4]
+      print('PROCESSING %s' %sname)
       Img = np.genfromtxt(f,dtype=float,delimiter=',')
       if mask == 'drug':
         print('<--- Using drug mask -->')
@@ -33,7 +34,7 @@ def Sizezonematrixfeatures(ngrl,mask):
         scaledImg = Img*m
         binnedImg = np.rint(scaledImg)
         Img = (binnedImg + 1)  
-       else:
+      else:
         Img = np.sqrt(Img)
         Img = np.rint(Img)
         Img = (Img +1)   
@@ -62,15 +63,15 @@ def Sizezonematrixfeatures(ngrl,mask):
       szmfeature.append(szm.transpose())
       fielid.append(sname)
     szmfeature = np.array(szmfeature)    
-    output = pd.DataFrame(szmfeature.reshape(szmfeature.shape[0],szmfeature.shape[2]),columns = ["SAE","LAE","IV","SZV","ZP","LIE","HIE","LISAE","HISAE","LILAE","HILAE"])
+    output = pd.DataFrame(szmfeature.reshape(szmfeature.shape[0],szmfeature.shape[2]),columns = ["sae","lae","iv","szv","zp","lie","hie","lisae","hisae","lilae","hilae"])
     output['Id'] = fielid
-    output.to_csv("SZM.csv",delimiter=",")
+    output.to_csv("SZM_features.csv",delimiter=",")
 
 
 def main():    
     parser = argparse.ArgumentParser(description="Size-zone matrix based features calculation")
-    parser.add_argument('-n', dest="nugrlvl", type=int, default=0, help="Define nu of gray-level for co-occurrence matrix calculation")
-    parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for GCLM calculations")
+    parser.add_argument('-n', dest="nugrlvl", type=int, default=32, help="Define nu of gray-level for Size Zone Matrix Calculations. (Default: 32)")
+    parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for SZM calculations. Available options 'drug', 'tic', 'mim'. (Default: 'drug')")
     args = parser.parse_args()
     Sizezonematrixfeatures(ngrl=args.nugrlvl,mask = args.mask)
 

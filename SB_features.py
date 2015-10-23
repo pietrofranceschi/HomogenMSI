@@ -13,6 +13,7 @@ def Shapefactorfeatures():
     stat = []
     for f in selmaskimg:
         sname = f[:-9];areat=0;perimetert = 0
+        print('PROCESSING %s' %sname)
         mask_drug = np.genfromtxt(f,dtype=float,delimiter=',')
         shapefactors = {}
         # Analysis using bkg mask image to get all global parameters
@@ -29,7 +30,7 @@ def Shapefactorfeatures():
         shapefactors['global_circularity'] = ((4*np.pi*area)/(perimeter**2))
         stat.append(shapefactors)
     output = pd.DataFrame(stat)
-    output.to_csv("ShapeFactors.csv",sep=',')
+    output.to_csv("SB_features.csv",sep=',')
         
 def main():    
     parser = argparse.ArgumentParser(description="Calcuates the shape factors for all drug mask images")

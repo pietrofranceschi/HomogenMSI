@@ -26,6 +26,15 @@ def Firstorderstatistics(mask):
         if mask == 'tic':
             print('<--- Using TIC tissue mask -->')
             Mask = np.genfromtxt(sname + '_tic.msk',dtype=float,delimiter=',')
+        if (ngrl != 0):
+            m = ngrl/Img.max()
+            scaledImg = Img*m
+            binnedImg = np.rint(scaledImg)
+            Img = (binnedImg + 1)  
+        else:
+            Img = np.sqrt(Img)
+            Img = np.rint(Img)
+            Img = (Img +1)
         tissueImg = np.multiply(Img,Mask)
         tissue = tissueImg[np.where(tissueImg>0)]
         FOS = {}
@@ -47,8 +56,9 @@ def Firstorderstatistics(mask):
 def main():    
     parser = argparse.ArgumentParser(description="Calculates the first order statistics of a series of .sim images. The outputs are stored as a csv")
     parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for FOS calculations. Available options 'drug', 'tic', 'mim'. (Default: 'drug')")
+    parser.add_argument('-n', dest="nugrlvl", type=int, default=32, help="Define number of gray-level for FOS calculation (Default: 32)")
     args = parser.parse_args()
-    Firstorderstatistics(mask = args.mask)
+    Firstorderstatistics(mask = args.mask,ngrl = args.nugrlvl)
         
 if __name__ == '__main__':
    main()

@@ -22,23 +22,35 @@ The pipeline relies mainly on numpy, scipy, skimage, argparse python modules. Th
 
 All scripts run as command line argument. Since output files obtained from GetIonIntensity method will use as an input for other methods, hence it is important to run this script first. After that feature calculation can be done in any order. 
 
-To get help about method, use -h argument. It will give details about input arguments, method function and other optional arguments. 
+To get help about method, use -h argument. It will give details about input arguments and other optional arguments.  
+
+## Get start with GetIonInensity 
  
-~/MSIdataset$ python GetIonImage.py -h 
-usage: GetIonImage.py [-h] [-mz MASSRANGE [MASSRANGE ...]] [-fr MFILTRAD] 
-                                       [-tic] [-mim] 
+This method creates an ion intensity image and its mask image at desired m-z value. In our study, we had knowledge about m-z value associate with drug compound, tissue object and internal standard respectively. Hence, multiple m-z values can be passed as an input argument. In the absence of any argument, ion intensity image at complete m-z scale will be constructed.
 
-Create an extracted ion image and its corresponding binary mask 
+mridula@mridula-HP-ProBook-6460b:~/data/$ python GetIonImage.py -h 
 
-optional arguments: 
-  -h, --help                   show this help message and exit 
-  -mz MASSRANGE [MASSRANGE ...] 
-                                     Desired m/z range 
-  -fr MFILTRAD          Radius of the median filter 
-  -tic                              TIC based tissue identification 
-  -mim                           Maximum Intensity Ion tissue identification 
+usage: GetIonImage.py [-h] [-mz MASSRANGE [MASSRANGE ...]]
+                           [-mz_tissue MASSRANGE_TISSUE [MASSRANGE_TISSUE ...]]
+                           [-mz_std MASSRANGE_STD [MASSRANGE_STD ...]]
+                           [-fr MFILTRAD] [-tic] [-mim]
 
-### Run GetIonImage method example
+Create an extracted ion image and its corresponding binary mask
+
+optional arguments:
+ -h, --help    show this help message and exit
+-mz MASSRANGE [MASSRANGE ...]
+              Desired m/z range
+-mz_tissue MASSRANGE_TISSUE [MASSRANGE_TISSUE ...]
+              m/z range correspond to tissue
+-mz_std MASSRANGE_STD [MASSRANGE_STD ...]
+              m/z range for standard
+-fr MFILTRAD  Radius of the median filter
+-tic          TIC based tissue identification
+-mim          Maximum Intensity Ion tissue identification
+
+
+### Run an example: 
 
 From above description it is clear all input arguments are optional. Hence, in case of zero argument it will return ion intensity image summed over whole mass scale and drug mask map. While user can define desired mass range as below: 
 ~/MSIdataset/ python GetIonImage -mz  284.2 284.3

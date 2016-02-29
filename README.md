@@ -61,12 +61,15 @@ optional arguments:
 ##### Run an example: 
 
 a. Create ion intensity image at desired mass range
+
  python GetIonImage.py -mz 284.15 284.17
  
 b. Create ion intensity image at desired mass range with standard
+
 ~/data/$ python GetIonImage.py -mz 284.15 284.17 -mz_std 289.16 289.18
 
 c. Create ion intensity image at desired mass range for drug compound, tissue object and standard:
+
 ~/data/$ python GetIonImage.py -mz 284.15 284.17 -mz_tissue 281.31 281.33 -mz_std 289.16 289.18
 
 

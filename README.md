@@ -64,6 +64,10 @@ a. *_Create ion intensity image at desired mass range_*
 
  python GetIonImage.py -mz 284.15 284.17
  
+ output image : 
+ 
+ ![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780-1A9_AVA.3041_150303notissuenstd.jpg "ion image")
+ 
 b. *_Create ion intensity image at desired mass range with standard_*
 
 ~/data/$ python GetIonImage.py -mz 284.15 284.17 -mz_std 289.16 289.18
@@ -73,7 +77,4 @@ c. *_Create ion intensity image at desired mass range for drug compound, tissue 
 ~/data/$ python GetIonImage.py -mz 284.15 284.17 -mz_tissue 281.31 281.33 -mz_std 289.16 289.18
 
 
-output image from above method: 
-
-![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/HCT116_AVA.5943_150521.jpg "Drug mask image")
 

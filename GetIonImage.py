@@ -161,7 +161,7 @@ def processMSIBatch(massrange=[], mfiltrad = 3, msk_tic = False, msk_mim = False
                val = filter.threshold_otsu(mask_drug)
                mask_tissue = mask_drug> val
                               
-               np.savetxt(sname + '_drug.sim',mask_drug,fmt='%-3.2f',delimiter=',')
+               np.savetxt(sname + '.sim',mask_drug,fmt='%-3.2f',delimiter=',')
                np.savetxt(sname + '_drug.msk',mask_tissue,fmt ='%-3.2f',delimiter=',')
                fig = plt.figure(1)
                ax1 = plt.subplot(211)
@@ -194,7 +194,7 @@ def processMSIBatch(massrange=[], mfiltrad = 3, msk_tic = False, msk_mim = False
                mask_drug = np.sqrt(MSImatrix) > val
                mask_drug = mask_drug.astype(int)        
 
-               np.savetxt(sname + '_drug.sim',MSImatrix,fmt='%-3.2f',delimiter=',')
+               np.savetxt(sname + '.sim',MSImatrix,fmt='%-3.2f',delimiter=',')
                np.savetxt(sname + '_drug.msk',mask_drug,fmt ='%-3.2f',delimiter=',')
                fig = plt.figure(1)
                ax1 = plt.subplot(211)

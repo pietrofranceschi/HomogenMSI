@@ -58,7 +58,7 @@ optional arguments:
 -mim          Maximum Intensity Ion tissue identification
 ```
 
-##### Run an example: 
+##### Run examples: 
 
 a. *_Create ion intensity image at desired mass range_*
 

@@ -39,7 +39,7 @@ def Graylevelrunlengthmatrixfeatures(ngrl):
         Img = np.sqrt(Img)
         Img = np.rint(Img)
         Img = (Img +1)   
-      tissue = Img
+      tissue = np.multiply(Img,Mask) 
       tissue = pd.DataFrame(tissue)
       rdf = com.convert_to_r_dataframe(tissue)
       ro.globalenv['tissue'] = rdf

@@ -16,7 +16,7 @@ The pipeline relies mainly on numpy, scipy, skimage, argparse python modules. Th
 
 5) SB_features : This function will calculate shape based features for tissue mask image. It will return: number of small disconnected objects within tissue, their area and perimeter. Required : cv2 python module.
 
-![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/github.jpeg "Pipeline workflow") {:style="float: right;margin-right: 7px;margin-top: 7px;"
+![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/github.jpeg "Pipeline workflow") {:style="float: right;margin-right: 7px;margin-top: 7px;"}
 
 ## How to use it 
 

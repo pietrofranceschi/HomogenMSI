@@ -76,4 +76,5 @@ c. Create ion intensity image at desired mass range for drug compound, tissue ob
 output image files:
 ```
 
-       ![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/allimg.jpeg "ion image")
+
+   ![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/allimg.jpeg "ion image")

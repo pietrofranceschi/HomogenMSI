@@ -38,15 +38,22 @@ usage: GetIonImage.py [-h] [-mz MASSRANGE [MASSRANGE ...]]
 Create an extracted ion image and its corresponding binary mask
 
 optional arguments:
+
  -h, --help    show this help message and exit
+ 
 -mz MASSRANGE [MASSRANGE ...]
               Desired m/z range
+              
 -mz_tissue MASSRANGE_TISSUE [MASSRANGE_TISSUE ...]
               m/z range correspond to tissue
+              
 -mz_std MASSRANGE_STD [MASSRANGE_STD ...]
               m/z range for standard
+              
 -fr MFILTRAD  Radius of the median filter
+
 -tic          TIC based tissue identification
+
 -mim          Maximum Intensity Ion tissue identification
 
 

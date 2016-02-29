@@ -27,7 +27,7 @@ To get help about method, use -h argument. It will give details about input argu
 ## Get start with GetIonInensity 
  
 This method creates an ion intensity image and its mask image at desired m-z value. In our study, we had knowledge about m-z value associate with drug compound, tissue object and internal standard respectively. Hence, multiple m-z values can be passed as an input argument. In the absence of any argument, ion intensity image at complete m-z scale will be constructed.
-
+'''
 mridula@mridula-HP-ProBook-6460b:~/data/$ python GetIonImage.py -h 
 
 usage: GetIonImage.py [-h] [-mz MASSRANGE [MASSRANGE ...]]
@@ -42,15 +42,12 @@ optional arguments:
  -h, --help    show this help message and exit
  
 -mz MASSRANGE [MASSRANGE ...]
-              
-              Desired m/z range
+            Desired m/z range
               
 -mz_tissue MASSRANGE_TISSUE [MASSRANGE_TISSUE ...]
-              
               m/z range correspond to tissue
               
 -mz_std MASSRANGE_STD [MASSRANGE_STD ...]
-              
               m/z range for standard
               
 -fr MFILTRAD  Radius of the median filter
@@ -58,7 +55,7 @@ optional arguments:
 -tic          TIC based tissue identification
 
 -mim          Maximum Intensity Ion tissue identification
-
+'''
 
 ### Run an example: 
 

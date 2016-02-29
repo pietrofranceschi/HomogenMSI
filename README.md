@@ -24,7 +24,7 @@ All scripts run as command line argument. Since output files obtained from GetIo
 
 To get help about method, use -h argument. It will give details about input arguments and other optional arguments.  
 
-#### Get start with GetIonInensity
+#### Let's start with GetIonInensity
  
 This method creates an ion intensity image and its mask image at desired m-z value. In our study, we had knowledge about m-z value associate with drug compound, tissue object and internal standard respectively. Hence, multiple m-z values can be passed as an input argument. In the absence of any argument, ion intensity image at complete m-z scale will be constructed.
 

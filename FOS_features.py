@@ -26,6 +26,7 @@ def Firstorderstatistics(mask):
         if mask == 'tic':
             print('<--- Using TIC tissue mask -->')
             Mask = np.genfromtxt(sname + '_tic.msk',dtype=float,delimiter=',')
+        ## rescaling to the desired number of gray levels
         if (ngrl != 0):
             m = ngrl/Img.max()
             scaledImg = Img*m

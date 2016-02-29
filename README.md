@@ -61,7 +61,7 @@ optional arguments:
 ##### Run examples: 
 
 ```s
-a. ###Create ion intensity image at desired mass range
+a. Create ion intensity image at desired mass range
 
  python GetIonImage.py -mz 284.15 284.17
  

@@ -1,7 +1,6 @@
 #homogenPy
 =====
 
-
 homogenPy is a python pipeline to perform homogeneity assessment of MSI dataset(s). 
 Our pipeline contains different functions to understand drug distribution by taking advantage from different texture analysis based methods, such as an intensity histogram based first-order statistics, gray-level co-occurence matrix (GLCM) based, gray-level run length matrix (GLRLM) based,  size-zone matrix (SZM) based and shape factors based. 
 
@@ -26,7 +25,7 @@ All scripts run as command line argument. Since output files obtained from GetIo
 
 To get help about method, use -h argument. It will give details about input arguments and other optional arguments.  
 
-## Get start with GetIonInensity 
+#### Get start with GetIonInensity 
  
 This method creates an ion intensity image and its mask image at desired m-z value. In our study, we had knowledge about m-z value associate with drug compound, tissue object and internal standard respectively. Hence, multiple m-z values can be passed as an input argument. In the absence of any argument, ion intensity image at complete m-z scale will be constructed.
 
@@ -45,7 +44,7 @@ optional arguments:
  -h, --help    show this help message and exit
  
 -mz MASSRANGE [MASSRANGE ...]
-            Desired m/z range
+             Desired m/z range
               
 -mz_tissue MASSRANGE_TISSUE [MASSRANGE_TISSUE ...]
               m/z range correspond to tissue
@@ -60,7 +59,7 @@ optional arguments:
 -mim          Maximum Intensity Ion tissue identification
 ```
 
-### Run an example: 
+##### Run an example: 
 
 From above description it is clear all input arguments are optional. Hence, in case of zero argument it will return ion intensity image summed over whole mass scale and drug mask map. While user can define desired mass range as below: 
 ~/MSIdataset/ python GetIonImage -mz  284.2 284.3

@@ -60,8 +60,15 @@ optional arguments:
 
 ##### Run an example: 
 
-From above description it is clear all input arguments are optional. Hence, in case of zero argument it will return ion intensity image summed over whole mass scale and drug mask map. While user can define desired mass range as below: 
-~/MSIdataset/ python GetIonImage -mz  284.2 284.3
+a. Create ion intensity image at desired mass range
+ python GetIonImage.py -mz 284.15 284.17
+ 
+b. Create ion intensity image at desired mass range with standard
+~/data/$ python GetIonImage.py -mz 284.15 284.17 -mz_std 289.16 289.18
+
+c. Create ion intensity image at desired mass range for drug compound, tissue object and standard:
+~/data/$ python GetIonImage.py -mz 284.15 284.17 -mz_tissue 281.31 281.33 -mz_std 289.16 289.18
+
 
 output image from above method: 
 

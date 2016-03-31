@@ -16,7 +16,7 @@ def Graylevelrunlengthmatrixfeatures(ngrl):
     selionimg = grep(dircontent,'.sim')
     fielid = []; glrlfeature=[]
     for f in selionimg:
-      sname = f[:-4]
+      sname = f[:-9]
       print('PROCESSING %s' %sname)
       Img = np.genfromtxt(f,dtype=float,delimiter=',')
       if mask == 'drug':
@@ -66,7 +66,7 @@ def Graylevelrunlengthmatrixfeatures(ngrl):
 
 
 def main():    
-    parser = argparse.ArgumentParser(description="Size-zone matrix based features calculation")
+    parser = argparse.ArgumentParser(description="Gray-level run length matrix based features calculation")
     parser.add_argument('-n', dest="nugrlvl", type=int, default=32, help="Define nu of gray-level for Size Zone Matrix Calculations. (Default: 32)")
     parser.add_argument('-mask',dest = "mask",type = str, default='drug',help = "Mask used for GLRLM calculations. Available options 'drug', 'tic', 'mim'. (Default: 'drug')")
     args = parser.parse_args()

@@ -75,7 +75,7 @@ c. Create ion intensity image at desired mass range for drug compound, tissue ob
 
 output image files:
 ```
-### Features calculation:
+##### Features calculation:
 
 ```s
 a) First order statistics

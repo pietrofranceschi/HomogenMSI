@@ -14,7 +14,7 @@ def Firstorderstatistics(mask,ngl):
     selionimg = grep(dircontent,'.sim')
     stat = []
     for f in selionimg:
-        sname = f[:-4]
+        sname = f[:-9]
         print('PROCESSING %s' %sname)
         Img = np.genfromtxt(f,dtype=float,delimiter=',')
         if mask == 'drug':

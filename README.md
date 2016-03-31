@@ -75,6 +75,13 @@ c. Create ion intensity image at desired mass range for drug compound, tissue ob
 
 output image files:
 ```
+# For features calculation:
+
+```s
+a) First order statistics
+	python FOS_features.py -n 8
+```	
+	
 
 
    ![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/allimg.jpeg "ion image")

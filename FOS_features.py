@@ -33,8 +33,6 @@ def Firstorderstatistics(mask):
             binnedImg = np.rint(scaledImg)
             Img = (binnedImg + 1)  
         else:
-            Img = np.sqrt(Img)
-            Img = np.rint(Img)
             Img = (Img +1)
         tissueImg = np.multiply(Img,Mask)
         tissue = tissueImg[np.where(tissueImg>0)]

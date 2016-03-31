@@ -107,14 +107,13 @@ def GLCMfeatures(d,ngrl,mask):
         if mask == 'tic':
             print('<--- Using TIC tissue mask -->')
             Mask = np.genfromtxt(sname + '_mim.msk',dtype=float,delimiter=',')
-         ## rescaling to the desired number of gray levels
-        if (ngrl != 0):
-            m = ngrl/Img.max()
-            scaledImg = Img*m
-            binnedImg = np.rint(scaledImg)
-            Img = (binnedImg + 1)  
-        else:
-            Img = (Img +1)
+       
+       ## rescaling to the desired number of gray levels
+        m = ngrl/Img.max()
+        scaledImg = Img*m
+        binnedImg = np.rint(scaledImg)
+        Img = (binnedImg + 1)  
+
         ## calculate the masked tissue
         tissue = np.multiply(Img,Mask)
         GLCM = {}

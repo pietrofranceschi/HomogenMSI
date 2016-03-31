@@ -29,13 +29,12 @@ def Sizezonematrixfeatures(ngrl,mask):
         print('<--- Using TIC tissue mask -->')
         Mask = np.genfromtxt(sname + '_mim.msk',dtype=float,delimiter=',')
       ## rescaling to the desired number of gray levels
-      if (ngrl != 0):
-        m = ngrl/Img.max()
-        scaledImg = Img*m
-        binnedImg = np.rint(scaledImg)
-        Img = (binnedImg + 1)  
-      else:
-        Img = (Img +1)   
+
+      m = ngrl/Img.max()
+      scaledImg = Img*m
+      binnedImg = np.rint(scaledImg)
+      Img = (binnedImg + 1)  
+      
       tissue = np.multiply(Img,Mask) 
       tissue = pd.DataFrame(tissue)
       rdf = com.convert_to_r_dataframe(tissue)

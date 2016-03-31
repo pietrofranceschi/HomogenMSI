@@ -8,7 +8,7 @@ def grep(l,s):
     return [i for i in l if s in i]
 
 
-def Firstorderstatistics(mask):
+def Firstorderstatistics(mask,ngl):
     '''Function calculate first order statistics the tissue image'''
     dircontent = os.listdir('.')  ## dirrctory content
     selionimg = grep(dircontent,'.sim')
@@ -27,13 +27,11 @@ def Firstorderstatistics(mask):
             print('<--- Using TIC tissue mask -->')
             Mask = np.genfromtxt(sname + '_tic.msk',dtype=float,delimiter=',')
         ## rescaling to the desired number of gray levels
-        if (ngrl != 0):
-            m = ngrl/Img.max()
-            scaledImg = Img*m
-            binnedImg = np.rint(scaledImg)
-            Img = (binnedImg + 1)  
-        else:
-            Img = (Img +1)
+        m = ngrl/Img.max()
+        scaledImg = Img*m
+        binnedImg = np.rint(scaledImg)
+        Img = (binnedImg + 1)  
+
         tissueImg = np.multiply(Img,Mask)
         tissue = tissueImg[np.where(tissueImg>0)]
         FOS = {}

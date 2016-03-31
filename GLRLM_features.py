@@ -10,7 +10,7 @@ import pandas as pd
 def grep(l,s):
     return [i for i in l if s in i]
 
-def Graylevelrunlengthmatrixfeatures(ngrl):
+def Graylevelrunlengthmatrixfeatures(ngrl,mask):
     '''Function calculate Gray level run length matrix based features'''
     dircontent = os.listdir('.')
     selionimg = grep(dircontent,'.sim')

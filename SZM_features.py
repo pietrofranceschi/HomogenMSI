@@ -35,8 +35,6 @@ def Sizezonematrixfeatures(ngrl,mask):
         binnedImg = np.rint(scaledImg)
         Img = (binnedImg + 1)  
       else:
-        Img = np.sqrt(Img)
-        Img = np.rint(Img)
         Img = (Img +1)   
       tissue = np.multiply(Img,Mask) 
       tissue = pd.DataFrame(tissue)

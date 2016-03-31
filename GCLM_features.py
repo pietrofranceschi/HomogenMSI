@@ -114,8 +114,6 @@ def GLCMfeatures(d,ngrl,mask):
             binnedImg = np.rint(scaledImg)
             Img = (binnedImg + 1)  
         else:
-            Img = np.sqrt(Img)
-            Img = np.rint(Img)
             Img = (Img +1)
         ## calculate the masked tissue
         tissue = np.multiply(Img,Mask)

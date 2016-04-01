@@ -79,14 +79,23 @@ output image files:
 
 ```s
 a) First order statistics
+
 	python FOS_features.py -n 8
+	
 b) Gray-level co-occurrence matrix based features: 
+
          python GCLM_features.py -d 5 -n 16
+         
 c) Size-sone matrix based features
+
         SZM_features.py -n 8
+        
 d) Gray-level run length matrix based features
+
          GLRLM_features.py -n 8
+         
 e) Shape based features
+
       python SB_features.py
 ```	
 	

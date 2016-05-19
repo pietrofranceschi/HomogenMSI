@@ -122,7 +122,7 @@ def GLCMfeatures(d,ngrl,mask):
         for i in d:                                     
             feat_angle = []
             for j in a:                               # for loop on angle parameter
-                g = greycomatrix(tissue,[i],[j])
+                g = greycomatrix(tissue,d[i],a[j])
                 g = g.reshape(g.shape[0],g.shape[1])
                 g[0,0] = 0                                         # providing zero value to gray level corresponding to background region
                 g = g.astype(np.float)

@@ -131,6 +131,7 @@ def processMSIBatch(massrange=[], mfiltrad = 3, msk_tic = False, msk_mim = False
                MSImatrix_drug = readAnalyzeImage(sname + '.img',mass,myheader,massrange[0:2]) 
                MSImatrix_tissue = readAnalyzeImage(sname + '.img',mass,myheader,massrange[2:4])              
                MSImatrix_drug = np.sqrt(MSImatrix_drug); MSImatrix_tissue = np.sqrt(MSImatrix_tissue); 
+               MSImatrix_drug = MSImatrix_drug +1   # To make necrosis region different from background zero value
 
 ############## Dividing drug and tissue image with standard              
                if massrange_std:

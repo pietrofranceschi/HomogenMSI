@@ -73,14 +73,14 @@ szm = szm@.Data
 if(Bkg=='T')
 	szm = szm[-1,]   ### Removing sz values for the background of image
 szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
-colid = as.numeric(colnames(szm))
-id = which(colid >= Nu)
+szv = as.numeric(colnames(szm))
+id = which(szv >= Nu)
 DrugHomo = c()
 for(j in 1:length(id))
 {     
- DrugHomo[j] = sum(szm[id[j],])*as.numeric(colnames(szm)[id[j]])
+ DrugHomo[j] = DrugHomo + (szv[id[j]]) * sum(szm[,id[j]])
 }
-DrugHomo = DrugHomo/sum(szm)
+DrugHomo = DrugHomo/sum(szm[,id])
 if(!missing(TumorArea))
    DrugHomo = DrugHomo/TumorArea
 return(DrugHomo)

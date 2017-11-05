@@ -78,7 +78,7 @@ id = which(colid >= Nu)
 DrugHomo = c()
 for(j in 1:length(id))
 {     
- DrugHomo[j] = sum(szm[id[j],]*as.numeric(colnames(szm)id[j]))
+ DrugHomo[j] = sum(szm[id[j],])*as.numeric(colnames(szm)[id[j]])
 }
 DrugHomo = DrugHomo/sum(szm)
 if(!missing(TumorArea))

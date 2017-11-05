@@ -13,7 +13,7 @@ Note: while using DHI function, knowledge about a number of pixels in tumor area
 ## Requirments
 R version above 3.0
 
-R packages: MALDIquant Foreign, radiomics, msProcess
+R packages: MALDIquantForeign, radiomics, msProcess
 
 ### Inputs
 

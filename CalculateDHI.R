@@ -67,29 +67,30 @@ return(output)
 
 ##### calculate DHI value from given MSI data (unnormalized with tumor area)
 
-DHI <- function(img,Nu,TumorArea)
+DHI <- function(img,Nu=1,Bkg='T',TumorArea)
 {
- szm = glszm(img)
- szm = szm[-1,]   ### Removing sz values for the background of image
- szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
- colid = as.numeric(colnames(szm))
- id = which(Nu =>colid)
- DrugHomo = c()
- for(j in 1:length(id))
- {     
-    DrugHomo[j] = sum(szm[id[j],]*as.numeric(colnames(szm)id[j]))
-  }
+szm = glszm(img)
+szm = szm.@Data
+if(Bkg='T')
+	szm = szm[-1,]   ### Removing sz values for the background of image
+szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
+colid = as.numeric(colnames(szm))
+id = which(Nu =>colid)
+DrugHomo = c()
+for(j in 1:length(id))
+{     
+ DrugHomo[j] = sum(szm[id[j],]*as.numeric(colnames(szm)id[j]))
+}
 DrugHomo = DrugHomo/sum(szm)
- if(!missing(TumorArea))
- { DrugHomo = DrugHomo/TumorArea}
- 
- return(DrugHomo)
+if(!missing(TumorArea))
+   DrugHomo = DrugHomo/TumorArea
+return(DrugHomo)
 }
 
 
 
 
-CalculateDHI <- function(filename,binned,mz_drug,QuantLevel, Bkg='T', mz_mask,mz_std,mz_end)
+CalculateDHI <- function(filename,binned,mz_drug,QuantLevel=8, Bkg='T', mz_mask,mz_std,mz_end)
 {
 analyfie1 = importAnalyze(filename)
 IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(bin_odd)) 
@@ -97,12 +98,11 @@ colnames(IntenMatrix) = binname
 
 for(i in 1:length(analyfie1))
 {
-
- if(max(analyfie1[[i]]@intensity) < 100)   ### To avoid error due to the noisy spectrum 
- {IntenMatrix[i,] =0}
+if(max(analyfie1[[i]]@intensity) < 100)   ### To avoid error due to the noisy spectrum 
+{IntenMatrix[i,] =0}
  
- else
- {
+else
+{
 z <- msSet(as.matrix(analyfie1[[i]]@intensity),mz = as.vector(analyfie1[[i]]@mass))
 z <- msPeak(z, FUN="simple", use.mean=FALSE, snr=median(sort(unique(analyfie1[[i]]@intensity[2:100]))),span=5)
 mspeaks = cbind(z$peak.list[[1]]$mass.loc,z$peak.list[[1]]$mass.right,z$peak.list[[1]]$mass.left)
@@ -115,10 +115,10 @@ break
 
 else
 {
-id = which(mspeaks[j,1] > bin_even & mspeaks[j,1] < bin_odd)
+id = which(mspeaks[j,1] > binned[,1] & mspeaks[j,1] < binned[,2])
 ## id length zero if peaks appear on bin boundary, then substract some value from peak to find m/z bin
 if(length(id) ==0)
-{id = which((mspeaks[j]-0.01) > bin_even & (mspeaks[j]-0.01) < bin_odd)}
+{id = which((mspeaks[j]-0.01) > binned[,1] & (mspeaks[j]-0.01) < binned[,2])}
 id = id[[1]]
 if(IntenMatrix[i,id] !=0){
 IntenMatrix[i,id] = max(IntenMatrix[i,id],z$peak.list[[1]]$intensity[j])}   #### If already peak present then select the one with high intensity value 
@@ -131,20 +131,28 @@ else
 
 IntenMatrix[is.na(IntenMatrix)] = 0
 
- 
+
 ###### Create ion images
 x = analyfie1[[length(analyfie1)]]@metaData$imaging$pos[[1]] ;y = analyfie1[[length(analyfie1)]]@metaData$imaging$pos[[2]]
+
+## Find drug and tissue related ion bins 
+drug_bin = which(mz_drug[,1] > binned[,1] & mz_drug[,1] < binned[,2]);
+tissue_bin = which(mz_tissue[,1] > binned[,1] & mz_tissue[,1] < binned[,2]); 
+
+## Create drug and tissue ion images 
+
+Img_drug =  IntenMatrix[,drug_bin]; dim(Img_drug) = c(y,x); Img_tissue =  IntenMatrix[,tissue_bin]; dim(Img_tissue) = c(y,x)
  
-Img_drug =  IntenMatrix[,mz_drug]; dim(Img_drug) = c(y,x); Img_tissue =  IntenMatrix[,mz_tissue]; dim(Img_tissue) = c(y,x)
+if(!missing(mz_std))
+{
+instd_bin = which(mz_std[,1] > binned[,1] & mz_std[,1] < binned[,2]);
+Img_std =  IntenMatrix[,mz_std]; dim(Img_std) = c(y,x)
+Img_tissue = (Img_tissue/(Img_std+1))
+Img_drug = (Img_drug/(Img_std+1))
+}
  
- if(!missing(mz_std))
- {
- Img_std =  IntenMatrix[,mz_std]; dim(Img_std) = c(y,x)
- Img_tissue = (Img_tissue/(Img_std+1))
- Img_drug = (Img_drug/(Img_std+1))
- }
- 
-##### Masking based on first histogram block cut-off
+
+##### Masking based on density plot 
 
 mask = medianFilterR(Img_tissue)
 d = density(mask)
@@ -152,17 +160,18 @@ maskvalue = d$x[minimums(d$y)[1]]
 mask = mask > maskvalue
 
 par(mfrow=c(1,3))
-image(medianFilterR(Img_drug),col=viridis(256), axes = FALSE);image(medianFilterR(Img_tissue),col=viridis(256), axes = FALSE);image(mask, axes = FALSE)
+image(medianFilterR(Img_drug), axes = FALSE);image(medianFilterR(Img_tissue), axes = FALSE);image(mask, axes = FALSE)
 savePlot(paste(filename,".png",sep=""),type = "png")
 
 m = QuantLevel/max(data_drug)
 Img_quantized = Img_drug*m
 Img_quantized = ceiling(Img_quantized)
+Img_quantized = medianFilterR(Img_quantized)
 Img_quantized = mask * Img_quantized
 write.table(mask,paste(filename,"_MaskedImg.csv",sep=""),sep=',');write.table(Img_quantized,paste(filename,"_DrugQuantizedImg.csv",sep=""),sep=',')
 
 TumorArea = table(mask)[[2]]
-DHIvalue = DHI(Img_quantized)/TumorArea
+DHIvalue = DHI(Img_quantized,Bkg='T')/TumorArea
 
 return(DHIvalue)
 }

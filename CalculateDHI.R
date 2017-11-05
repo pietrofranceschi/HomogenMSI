@@ -89,8 +89,15 @@ return(DrugHomo)
 
 binned = CreateBin(filename,binsize=0.5)
 
-CalculateDHI <- function(filename,binned,mz_drug,QuantLevel=8, Bkg='T', mz_mask,mz_std,mz_end)
+CalculateDHI <- function(filename,binned,mzs,QuantLevel=8, Bkg='T')
 {
+if(lenght(mzs) < 1) stop('m/z value is missing')
+
+if(length(mzs) ==3)
+	mz_drug = mzs[1];mz_mask = mzs[2]; mz_std = msz[3]
+elseif(length(mzs) ==2)
+	mz_drug = mzs[1];mz_mask = mzs[2]
+	
 analyfie1 = importAnalyze(filename)
 IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(binned[,1])) 
 
@@ -106,7 +113,7 @@ z <- msPeak(z, FUN="simple", use.mean=FALSE, snr=median(sort(unique(analyfie1[[i
 mspeaks = cbind(z$peak.list[[1]]$mass.loc,z$peak.list[[1]]$mass.right,z$peak.list[[1]]$mass.left)
 for(j in 1:dim(mspeaks)[1])
 {
-if(mspeaks[j,1]>mz_end)
+if(mspeaks[j,1]> (max(msz)+1))
 {
 break
 }

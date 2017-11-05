@@ -4,7 +4,6 @@ suppressMessages(library("MALDIquantForeign"))
 suppressMessages(library("msProcess"))
 suppressMessages(library("splus2R"))
 suppressMessages(library("data.table"))
-suppressMessages(library("radiomics"))
 
 ### local minima search in density plot 
 
@@ -68,20 +67,23 @@ return(output)
 
 ##### calculate DHI value from given MSI data (unnormalized with tumor area)
 
-DHI <- function(img,Nu)
+DHI <- function(img,Nu,TumorArea)
 {
  szm = glszm(img)
  szm = szm[-1,]   ### Removing sz values for the background of image
  szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
  colid = as.numeric(colnames(szm))
  id = which(Nu =>colid)
- lae = c()
+ DrugHomo = c()
  for(j in 1:length(id))
  {     
-    lae[j] = sum(szm[id[j],]*as.numeric(colnames(szm)id[j]))
+    DrugHomo[j] = sum(szm[id[j],]*as.numeric(colnames(szm)id[j]))
   }
- lae = lae/sum(szm)
- return(lae)
+DrugHomo = DrugHomo/sum(szm)
+ if(!missing(TumorArea))
+ { DrugHomo = DrugHomo/TumorArea}
+ 
+ return(DrugHomo)
 }
 
 

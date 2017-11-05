@@ -20,11 +20,11 @@ R packages: MALDIquant Foreign, radiomics, msProcess
 For DHI calculation, certain parameters need to define:
 1.	Filename: MSI data folder location in user computer
 2.	Binned: m/z bins which can create using CreateBin function
-3.	Mz_drug: m/z for drug ion peak
+3.	mz_drug: m/z for drug ion peak
 4.	QuntLevel: Intensity quantization level to be used, ex: 8, 16, 32
-5.	Mz_mask: m/z for mask ion peak. In the absence of m/z for mask image, drug image will be used to create tissue mask image.
-6.	Mz_std: m/z for internal standard ion peak (optional)
-7.	Mz_end: last m/z value for the subset section in mz spectrum (optional)
+5.	mz_mask: m/z for mask ion peak. In the absence of m/z for mask image, drug image will be used to create tissue mask image.
+6.	mz_std: m/z for internal standard ion peak (optional)
+7.	mz_end: last m/z value for the subset section in mz spectrum (optional)
 8.	Bkg : ‘T’ In our study, we had tissue slice placed on the glass side, hence we had removed the gray level associated with it before DHI calculation. If this is not a case with the user, use ‘F’. Default value is ‘T’
 
 

@@ -6,7 +6,7 @@ a)	CalculateDHI
 
 b)	DHI
 
-The CalculateDHI function calculates the DHI value from given  MSI data following our pre-processing steps discussion in the paper. If the user simply wants to calculate DHI on their pre-processed data can directly drive it using DHI function. 
+The CalculateDHI function calculates the DHI value from given  MSI data following our pre-processing steps discussed in the paper. If the user simply wants to calculate DHI on their pre-processed data can directly drive it using DHI function. 
 
 Note: while using DHI function, knowledge about a number of pixels in tumor area required and for efficient calculation assigns background gray level equal to the zero. 
 

@@ -1,0 +1,170 @@
+
+suppressMessages(library("MALDIquant"))
+suppressMessages(library("MALDIquantForeign"))
+suppressMessages(library("msProcess"))
+suppressMessages(library("splus2R"))
+suppressMessages(library("data.table"))
+suppressMessages(library("radiomics"))
+
+### local minima search in density plot 
+
+minimums <- function(x) which(x - shift(x, 1) < 0  & x - shift(x, 1, type='lead') < 0)   
+
+
+## function for 3x3 median filtering 
+
+medianFilterR <- function(sampleMat)                              
+{
+  B = matrix(0, nrow= dim(sampleMat)[1],ncol=dim(sampleMat)[2])
+  modifyA = matrix(0,nrow=(dim(sampleMat)[1]+2),ncol=(dim(sampleMat)[2]+2))
+  for(x in 1:dim(sampleMat)[1])
+  {
+    for(y in 1:dim(sampleMat)[2])
+    {
+      modifyA[x+1,y+1] = sampleMat[x,y]
+    }
+  }
+  for(i in 1:(dim(modifyA)[1]-2))
+  {
+    for(j in 1:(dim(modifyA)[2]-2))
+    {
+      window = rep(0,9)
+      inc = 1
+      for(x in 1:3)
+      {
+        for(y in 1:3)
+        {
+          window[inc] = modifyA[i+x-1,j+y-1]
+          inc = inc +1
+        }
+      }
+      med = sort(window)
+      B[i,j] = med[5]
+    }
+  }
+  return(B)
+}
+
+
+## Create initial bins for peak selection 
+
+CreateBin <- function(filepath,filepath,binsize=0.5)
+{
+analyfile = importAnalyze(filepath)
+binlength = seq(range(analyfile[[1]]@mass)[1], range(analyfile[[1]]@mass)[2], by = binsize) # for fixed bin size
+ cuts = cut(analyfile[[1]]@mass,binlength)
+ duration.freq = table(cuts)
+ duration.freq = cbind(duration.freq)
+ cutdur = row.names(duration.freq)
+ binsplit = function(x){as.numeric(unlist(strsplit(gsub("\\(|\\]", "", x),','))[1])}
+ bin_even = sapply(cutdur,binsplit)
+ binsplit = function(x){as.numeric(unlist(strsplit(gsub("\\(|\\]", "", x),','))[2])}
+ bin_odd = sapply(cutdur,binsplit)
+binned = cbind(bin_even,bin_odd)
+binname = apply(binned,1,mean)
+output = list(binned,binname)
+return(output)
+}
+
+##### calculate DHI value from given MSI data (unnormalized with tumor area)
+
+DHI <- function(img,Nu)
+{
+ szm = glszm(img)
+ szm = szm[-1,]   ### Removing sz values for the background of image
+ szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
+ colid = as.numeric(colnames(szm))
+ id = which(Nu =>colid)
+ lae = c()
+ for(j in 1:length(id))
+ {     
+    lae[j] = sum(szm[id[j],]*as.numeric(colnames(szm)id[j]))
+  }
+ lae = lae/sum(szm)
+ return(lae)
+}
+
+
+
+
+CalculateDHI <- function(filename,binned,mz_drug,QuantLevel, mz_tissue,mz_std,mz_end)
+{
+analyfie1 = importAnalyze(filename)
+IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(bin_odd)) 
+colnames(IntenMatrix) = binname
+
+for(i in 1:length(analyfie1))
+{
+
+ if(max(analyfie1[[i]]@intensity) < 100)   ### To avoid error due to the noisy spectrum 
+ {IntenMatrix[i,] =0}
+ 
+ else
+ {
+z <- msSet(as.matrix(analyfie1[[i]]@intensity),mz = as.vector(analyfie1[[i]]@mass))
+z <- msPeak(z, FUN="simple", use.mean=FALSE, snr=median(sort(unique(analyfie1[[i]]@intensity[2:100]))),span=5)
+mspeaks = cbind(z$peak.list[[1]]$mass.loc,z$peak.list[[1]]$mass.right,z$peak.list[[1]]$mass.left)
+for(j in 1:dim(mspeaks)[1])
+{
+if(mspeaks[j,1]>mz_end)
+{
+break
+}
+
+else
+{
+id = which(mspeaks[j,1] > bin_even & mspeaks[j,1] < bin_odd)
+## id length zero if peaks appear on bin boundary, then substract some value from peak to find m/z bin
+if(length(id) ==0)
+{id = which((mspeaks[j]-0.01) > bin_even & (mspeaks[j]-0.01) < bin_odd)}
+id = id[[1]]
+if(IntenMatrix[i,id] !=0){
+IntenMatrix[i,id] = max(IntenMatrix[i,id],z$peak.list[[1]]$intensity[j])}   #### If already peak present then select the one with high intensity value 
+else
+{IntenMatrix[i,id] = z$peak.list[[1]]$intensity[j]}
+}
+}
+}
+} 
+
+IntenMatrix[is.na(IntenMatrix)] = 0
+
+ 
+###### Create ion images
+x = analyfie1[[length(analyfie1)]]@metaData$imaging$pos[[1]] ;y = analyfie1[[length(analyfie1)]]@metaData$imaging$pos[[2]]
+ 
+Img_drug =  IntenMatrix[,mz_drug]; dim(Img_drug) = c(y,x); Img_tissue =  IntenMatrix[,mz_tissue]; dim(Img_tissue) = c(y,x)
+ 
+ if(!missing(mz_std))
+ {
+ Img_std =  IntenMatrix[,mz_std]; dim(Img_std) = c(y,x)
+ Img_tissue = (Img_tissue/(Img_std+1))
+ Img_drug = (Img_drug/(Img_std+1))
+ }
+ 
+##### Masking based on first histogram block cut-off
+
+mask = medianFilterR(Img_tissue)
+d = density(mask)
+maskvalue = d$x[minimums(d$y)[1]]
+mask = mask > maskvalue
+
+par(mfrow=c(1,3))
+image(medianFilterR(Img_drug),col=viridis(256), axes = FALSE);image(medianFilterR(Img_tissue),col=viridis(256), axes = FALSE);image(mask, axes = FALSE)
+savePlot(paste(filename,".png",sep=""),type = "png")
+
+m = QuantLevel/max(data_drug)
+Img_quantized = Img_drug*m
+Img_quantized = ceiling(Img_quantized)
+Img_quantized = mask * Img_quantized
+write.table(mask,paste(filename,"_MaskedImg.csv",sep=""),sep=',');write.table(Img_quantized,paste(filename,"_DrugQuantizedImg.csv",sep=""),sep=',')
+
+TumorArea = table(mask)[[2]]
+DHIvalue = DHI(Img_quantized)/TumorArea
+
+return(DHIvalue)
+}
+
+
+
+  

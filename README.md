@@ -3,6 +3,7 @@ This repository accompanies the article: Drug homogeneity index in mass spectrom
 There are two main functions in our pipeline: 
 
 a)	CalculateDHI
+
 b)	DHI
 
 The CalculateDHI function calculates the DHI value from given  MSI data following our pre-processing steps discussion in the paper. While if the user simply wants to calculate DHI on their pre-processed data can directly drive it using DHI function. 

@@ -75,7 +75,7 @@ if(Bkg=='T')
 szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
 szv = as.numeric(colnames(szm))
 id = which(szv >= Nu)
-DrugHomo = c()
+DrugHomo = 0
 for(j in 1:length(id))
 {     
  DrugHomo = DrugHomo + (szv[id[j]]) * sum(szm[,id[j]])

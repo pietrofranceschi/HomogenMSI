@@ -1,16 +1,20 @@
 This repository accompanies the article: Drug homogeneity index in mass spectrometry imaging and provides a reference implementation of our pipeline for drug homogeneity assessment in a given MSI data at different user-defined parameters. At the moment, our pipeline accepts single data format (analyze 7.5).  
 
 There are two main functions in our pipeline: 
+
 a)	CalculateDHI
 b)	DHI
+
 The CalculateDHI function calculates the DHI value from given  MSI data following our pre-processing steps discussion in the paper. While if the user simply wants to calculate DHI on their pre-processed data can directly drive it using DHI function. 
 Note: while using DHI function, knowledge about a number of pixels in tumor area required and for efficient calculation assigns background gray level equal to the zero. 
 
 ## Requirments
 R version above 3.0
+
 R packages: MALDIquant Foreign, radiomics, msProcess
 
 ### Inputs
+
 For DHI calculation, certain parameters need to define:
 1.	Filename: MSI data folder location in user computer
 2.	Binned: m/z bins which can create using CreateBin function

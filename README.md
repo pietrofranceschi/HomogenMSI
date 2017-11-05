@@ -1,6 +1,8 @@
 This repository accompanies the article: Drug homogeneity index in mass spectrometry imaging and provides a reference implementation of our pipeline for drug homogeneity assessment in a given MSI data at different user define 
 parameters. At the moment our pipeline accept single data format (analyze 7.5). 
+
 The pipeline is developed at FEM, San michele, Italy.
+
 For those wishing to use it for more general use, please consider instructions in General usage. 
 
 ## Requirments

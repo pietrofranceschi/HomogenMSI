@@ -8,7 +8,7 @@ For those wishing to use it for more general use, please consider instructions i
 ## Requirments
 
 R version above 3.0
-R packages : MALDIquant Foreign, radiomics, splus2R
+R packages : MALDIquant Foreign, radiomics, msProcess
 
 ### Inputs
 

@@ -50,7 +50,7 @@ medianFilterR <- function(sampleMat)
 CreateBin <- function(filepath,binsize=0.5)
 {
 analyfile = importAnalyze(filepath)
-binlength = seq(range(analyfile[[1]]@mass)[1], range(analyfile[[1]]@mass)[2], by = binsize) # for fixed bin size
+binlength = seq(range(analyfile[[1]]@mass)[1]-0.5, range(analyfile[[1]]@mass)[2]+0.5, by = binsize) # for fixed bin size
 cuts = cut(analyfile[[1]]@mass,binlength)
 duration.freq = table(cuts)
 duration.freq = cbind(duration.freq)

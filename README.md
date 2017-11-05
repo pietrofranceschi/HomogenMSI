@@ -10,7 +10,7 @@ R packages : MALDIquant Foreign, radiomics, splus2R
 
 ### Inputs
 
-To process a dataset three things are needed:
+To process a dataset two things are needed:
 1. MSI data location in user computer
 2. m/zs for : drug, internal standard (optional), mask image (optional).
 In the absence of m/z for mask image, drug image will be used to create tissue mask image. 

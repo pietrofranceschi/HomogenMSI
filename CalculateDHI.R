@@ -47,22 +47,21 @@ medianFilterR <- function(sampleMat)
 
 ## Create initial bins for peak selection 
 
-CreateBin <- function(filepath,filepath,binsize=0.5)
+CreateBin <- function(filepath,binsize=0.5)
 {
 analyfile = importAnalyze(filepath)
 binlength = seq(range(analyfile[[1]]@mass)[1], range(analyfile[[1]]@mass)[2], by = binsize) # for fixed bin size
- cuts = cut(analyfile[[1]]@mass,binlength)
- duration.freq = table(cuts)
- duration.freq = cbind(duration.freq)
- cutdur = row.names(duration.freq)
- binsplit = function(x){as.numeric(unlist(strsplit(gsub("\\(|\\]", "", x),','))[1])}
- bin_even = sapply(cutdur,binsplit)
- binsplit = function(x){as.numeric(unlist(strsplit(gsub("\\(|\\]", "", x),','))[2])}
- bin_odd = sapply(cutdur,binsplit)
+cuts = cut(analyfile[[1]]@mass,binlength)
+duration.freq = table(cuts)
+duration.freq = cbind(duration.freq)
+cutdur = row.names(duration.freq)
+binsplit = function(x){as.numeric(unlist(strsplit(gsub("\\(|\\]", "", x),','))[1])}
+bin_even = sapply(cutdur,binsplit)
+binsplit = function(x){as.numeric(unlist(strsplit(gsub("\\(|\\]", "", x),','))[2])}
+bin_odd = sapply(cutdur,binsplit)
 binned = cbind(bin_even,bin_odd)
 binname = apply(binned,1,mean)
-output = list(binned,binname)
-return(output)
+return(binned)
 }
 
 ##### calculate DHI value from given MSI data (unnormalized with tumor area)
@@ -88,13 +87,12 @@ return(DrugHomo)
 }
 
 
-
+binned = CreateBin(filename,binsize=0.5)
 
 CalculateDHI <- function(filename,binned,mz_drug,QuantLevel=8, Bkg='T', mz_mask,mz_std,mz_end)
 {
 analyfie1 = importAnalyze(filename)
 IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(bin_odd)) 
-colnames(IntenMatrix) = binname
 
 for(i in 1:length(analyfie1))
 {

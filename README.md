@@ -27,6 +27,12 @@ For DHI calculation, certain parameters need to define:
 7.	mz_end: last m/z value for the subset section in mz spectrum (optional)
 8.	Bkg : ‘T’ In our study, we had tissue slice placed on the glass side, hence we had removed the gray level associated with it before DHI calculation. If this is not a case with the user, use ‘F’. Default value is ‘T’
 
+### Example
+
+binned = CreateBin(folderpath)
+
+DHI = CalculateDHI(folderpath,binned,mz_drug=284.2,QuntLevel=8,mz_mask=281.2,mz_std=289.2,mz_end=300)
+
 
 ## Contact
 

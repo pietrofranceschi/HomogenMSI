@@ -70,7 +70,7 @@ DHI <- function(img,Nu=1,Bkg='T',TumorArea)
 {
 szm = glszm(img)
 szm = szm.@Data
-if(Bkg='T')
+if(Bkg=='T')
 	szm = szm[-1,]   ### Removing sz values for the background of image
 szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
 colid = as.numeric(colnames(szm))
@@ -92,7 +92,7 @@ binned = CreateBin(filename,binsize=0.5)
 CalculateDHI <- function(filename,binned,mz_drug,QuantLevel=8, Bkg='T', mz_mask,mz_std,mz_end)
 {
 analyfie1 = importAnalyze(filename)
-IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(bin_odd)) 
+IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(binned[,1])) 
 
 for(i in 1:length(analyfie1))
 {

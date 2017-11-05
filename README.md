@@ -3,12 +3,12 @@ parameters. At the moment our pipeline accept single data format (analyze 7.5).
 The pipeline is developed at FEM, San michele, Italy.
 For those wishing to use it for more general use, please consider instructions in General usage. 
 
-Requirments
+## Requirments
 
 R version above 3.0
 R packages : MALDIquant Foreign, radiomics, splus2R
 
-Inputs
+### Inputs
 
 To process a dataset three things are needed:
 1. MSI data location in user computer
@@ -16,5 +16,6 @@ To process a dataset three things are needed:
 In the absence of m/z for mask image, drug image will be used to create tissue mask image. 
 
 
-Contact
+## Contact
+
 email: Mridula Prasad 

@@ -69,12 +69,12 @@ return(binned)
 DHI <- function(img,Nu=1,Bkg='T',TumorArea)
 {
 szm = glszm(img)
-szm = szm.@Data
+szm = szm@.Data
 if(Bkg=='T')
 	szm = szm[-1,]   ### Removing sz values for the background of image
 szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
 colid = as.numeric(colnames(szm))
-id = which(Nu =>colid)
+id = which(colid >= Nu)
 DrugHomo = c()
 for(j in 1:length(id))
 {     

@@ -134,12 +134,12 @@ IntenMatrix[is.na(IntenMatrix)] = 0
 x = analyfie1[[length(analyfie1)]]@metaData$imaging$pos[[1]] ;y = analyfie1[[length(analyfie1)]]@metaData$imaging$pos[[2]]
 
 ## Find drug and tissue related ion bins 
-drug_bin = which(mz_drug[,1] > binned[,1] & mz_drug[,1] < binned[,2]);
-tissue_bin = which(mz_tissue[,1] > binned[,1] & mz_tissue[,1] < binned[,2]); 
+drug_bin = which(mz_drug > binned[,1] & mz_drug < binned[,2]);
+mask_bin = which(mz_mask > binned[,1] & mz_mask < binned[,2]); 
 
 ## Create drug and tissue ion images 
 
-Img_drug =  IntenMatrix[,drug_bin]; dim(Img_drug) = c(y,x); Img_tissue =  IntenMatrix[,tissue_bin]; dim(Img_tissue) = c(y,x)
+Img_drug =  IntenMatrix[,drug_bin]; dim(Img_drug) = c(y,x); Img_mask =  IntenMatrix[,mask_bin]; dim(Img_mask) = c(y,x)
  
 if(!missing(mz_std))
 {

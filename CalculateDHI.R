@@ -89,7 +89,7 @@ DrugHomo = DrugHomo/sum(szm)
 
 
 
-CalculateDHI <- function(filename,binned,mz_drug,QuantLevel, mz_tissue,mz_std,mz_end)
+CalculateDHI <- function(filename,binned,mz_drug,QuantLevel, Bkg='T', mz_mask,mz_std,mz_end)
 {
 analyfie1 = importAnalyze(filename)
 IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(bin_odd)) 

@@ -78,7 +78,7 @@ id = which(szv >= Nu)
 DrugHomo = c()
 for(j in 1:length(id))
 {     
- DrugHomo[j] = DrugHomo + (szv[id[j]]) * sum(szm[,id[j]])
+ DrugHomo = DrugHomo + (szv[id[j]]) * sum(szm[,id[j]])
 }
 DrugHomo = DrugHomo/sum(szm[,id])
 if(!missing(TumorArea))

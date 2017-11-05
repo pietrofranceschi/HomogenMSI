@@ -145,20 +145,20 @@ if(!missing(mz_std))
 {
 instd_bin = which(mz_std[,1] > binned[,1] & mz_std[,1] < binned[,2]);
 Img_std =  IntenMatrix[,mz_std]; dim(Img_std) = c(y,x)
-Img_tissue = (Img_tissue/(Img_std+1))
+Img_mask = (Img_mask/(Img_std+1))
 Img_drug = (Img_drug/(Img_std+1))
 }
  
 
 ##### Masking based on density plot 
 
-mask = medianFilterR(Img_tissue)
+mask = medianFilterR(Img_mask)
 d = density(mask)
 maskvalue = d$x[minimums(d$y)[1]]
 mask = mask > maskvalue
 
 par(mfrow=c(1,3))
-image(medianFilterR(Img_drug), axes = FALSE);image(medianFilterR(Img_tissue), axes = FALSE);image(mask, axes = FALSE)
+image(medianFilterR(Img_drug), axes = FALSE);image(medianFilterR(Img_mask), axes = FALSE);image(mask, axes = FALSE)
 savePlot(paste(filename,".png",sep=""),type = "png")
 
 m = QuantLevel/max(data_drug)

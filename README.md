@@ -28,9 +28,10 @@ DHI formula requires following input parameters:
 ### Example
 
 binned = CreateBin(folderpath)
-mzs = c(284.2,281.2,289.2)
 
-DHI = CalculateDHI(folderpath,binned,mzs,QuntLevel=8)
+mzs = c(284.2, 281.2, 289.2)
+
+DHI = CalculateDHI(folderpath, binned, mzs, QuntLevel=8)
 
 
 ## Contact

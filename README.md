@@ -47,7 +47,7 @@ b)
 
 ![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780_PTX%20%23352%202.png)
 
-In each row, leftmost image corresponds to the drug ion image, the middle image is the ion image used for the masking, and the rightmost image is the corresponding masked image. The obtained DHI values for above images using our formula are 0.0219, 0.0119.
+In each row, leftmost image corresponds to the drug ion image, the middle image is the ion image used for the masking, and the rightmost image is the corresponding masked image. The obtained DHI value for above drug ion images using our formula are 0.0219, 0.0119.
 
 ## Contact
 

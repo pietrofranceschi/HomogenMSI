@@ -37,7 +37,8 @@ DHI = CalculateDHI(folderpath, binned, mzs, QuntLevel=8)
 
 ### Outputs
 
-h![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780_AVA%20%23326%201.png)
+![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780_AVA%20%23326%201.png)
+![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780_PTX%20%23352%202.png)
 
 ## Contact
 

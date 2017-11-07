@@ -92,12 +92,12 @@ CalculateDHI <- function(filename,binned,mzs,QuantLevel=8, Bkg='T')
 {
 if(lenght(mzs) < 1) stop('m/z value is missing')
 
-if(length(mzs) ==3)
+if(length(mzs) ==3){
 	mz_drug = mzs[1];mz_mask = mzs[2]; mz_std = mzs[3]
-else if(length(mzs) ==2)
+}else if(length(mzs) ==2){
 	mz_drug = mzs[1];mz_mask = mzs[2]
-else
-	mz_drug= mzs[1]; mz_mask = mzs[1]
+}else
+	mz_drug= mzs[1]; mz_mask = mzs[1]}
 	
 analyfie1 = importAnalyze(filename)
 IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(binned[,1])) 

@@ -38,9 +38,11 @@ DHI = CalculateDHI(folderpath, binned, mzs, QuntLevel=8)
 ### Outputs
 
 a) 
+
 ![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780_AVA%20%23326%201.png)
 
 b) 
+
 ![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780_PTX%20%23352%202.png)
 
 CalculateDHI function output for two MSI data is shown. In each row, leftmost image corresponds to the drug ion image, middle image is the ion image used for the masking, and the right most image is the corresponding masked image. 

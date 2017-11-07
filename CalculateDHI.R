@@ -88,7 +88,7 @@ return(DrugHomo)
 }
 
 
-CalculateDHI <- function(filename,binned,mzs,QuantLevel=8, Bkg='T')
+CalculateDHI <- function(filepath,binned,mzs,QuantLevel=8, Bkg='T')
 {
 if(lenght(mzs) < 1) stop('m/z value is missing')
 
@@ -96,10 +96,10 @@ if(length(mzs) ==3){
 	mz_drug = mzs[1];mz_mask = mzs[2]; mz_std = mzs[3]
 }else if(length(mzs) ==2){
 	mz_drug = mzs[1];mz_mask = mzs[2]
-}else
+}else{
 	mz_drug= mzs[1]; mz_mask = mzs[1]}
 	
-analyfie1 = importAnalyze(filename)
+analyfie1 = importAnalyze(filepath)
 IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(binned[,1])) 
 
 for(i in 1:length(analyfie1))

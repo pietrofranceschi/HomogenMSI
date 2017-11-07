@@ -4,6 +4,7 @@ suppressMessages(library("MALDIquantForeign"))
 suppressMessages(library("msProcess"))
 suppressMessages(library("splus2R"))
 suppressMessages(library("data.table"))
+suppressMessages(library("radiomics"))
 
 ### local minima search in density plot 
 

@@ -35,6 +35,9 @@ mzs = c(284.2, 281.2, 289.2)
 
 DHI = CalculateDHI(folderpath, binned, mzs, QuntLevel=8)
 
+### Outputs
+
+h![alt text](https://github.com/pietrofranceschi/homogenPy/blob/master/A2780_AVA%20%23326%201.png)
 
 ## Contact
 

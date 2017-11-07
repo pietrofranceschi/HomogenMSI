@@ -97,6 +97,8 @@ if(length(mzs) ==3)
 	mz_drug = mzs[1];mz_mask = mzs[2]; mz_std = msz[3]
 elseif(length(mzs) ==2)
 	mz_drug = mzs[1];mz_mask = mzs[2]
+else(length(mzs) ==1)
+	mz_drug= mzs[1]; mz_mask = mzs[1]
 	
 analyfie1 = importAnalyze(filename)
 IntenMatrix = matrix(0,nrow=length(analyfie1),ncol = length(binned[,1])) 

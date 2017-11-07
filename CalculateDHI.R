@@ -87,8 +87,6 @@ return(DrugHomo)
 }
 
 
-binned = CreateBin(filename,binsize=0.5)
-
 CalculateDHI <- function(filename,binned,mzs,QuantLevel=8, Bkg='T')
 {
 if(lenght(mzs) < 1) stop('m/z value is missing')
@@ -115,7 +113,7 @@ z <- msPeak(z, FUN="simple", use.mean=FALSE, snr=median(sort(unique(analyfie1[[i
 mspeaks = cbind(z$peak.list[[1]]$mass.loc,z$peak.list[[1]]$mass.right,z$peak.list[[1]]$mass.left)
 for(j in 1:dim(mspeaks)[1])
 {
-if(mspeaks[j,1]> (max(msz)+1))
+if(mspeaks[j,1]> (max(mzs)+1))
 {
 break
 }

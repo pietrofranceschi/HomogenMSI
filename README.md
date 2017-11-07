@@ -54,4 +54,4 @@ In each row, leftmost image corresponds to the drug ion image, the middle image 
 
 ## Contact
 
-email: Mridula Prasad 
+email: Mridula Prasad <mridula122@gmail.com>

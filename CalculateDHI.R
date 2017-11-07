@@ -150,7 +150,7 @@ Img_drug =  IntenMatrix[,drug_bin]; dim(Img_drug) = c(y,x); Img_mask =  IntenMat
  
 if(!missing(mz_std))
 {
-instd_bin = which(mz_std[,1] > binned[,1] & mz_std[,1] < binned[,2]);
+instd_bin = which(mz_std > binned[,1] & mz_std < binned[,2]);
 Img_std =  IntenMatrix[,mz_std]; dim(Img_std) = c(y,x)
 Img_mask = (Img_mask/(Img_std+1))
 Img_drug = (Img_drug/(Img_std+1))

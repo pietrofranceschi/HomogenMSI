@@ -96,7 +96,7 @@ if(length(mzs) ==3)
 	mz_drug = mzs[1];mz_mask = mzs[2]; mz_std = mzs[3]
 else if(length(mzs) ==2)
 	mz_drug = mzs[1];mz_mask = mzs[2]
-else(length(mzs) ==1)
+else
 	mz_drug= mzs[1]; mz_mask = mzs[1]
 	
 analyfie1 = importAnalyze(filename)

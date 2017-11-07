@@ -92,7 +92,7 @@ CalculateDHI <- function(filename,binned,mzs,QuantLevel=8, Bkg='T')
 if(lenght(mzs) < 1) stop('m/z value is missing')
 
 if(length(mzs) ==3)
-	mz_drug = mzs[1];mz_mask = mzs[2]; mz_std = msz[3]
+	mz_drug = mzs[1];mz_mask = mzs[2]; mz_std = mzs[3]
 else if(length(mzs) ==2)
 	mz_drug = mzs[1];mz_mask = mzs[2]
 else(length(mzs) ==1)

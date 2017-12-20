@@ -169,7 +169,7 @@ par(mfrow=c(1,3))
 image(medianFilterR(Img_drug), axes = FALSE);image(medianFilterR(Img_mask), axes = FALSE);image(mask, axes = FALSE)
 savePlot(paste(filename,".png",sep=""),type = "png")
 
-m = QuantLevel/max(data_drug)
+m = QuantLevel/max(Img_drug)
 Img_quantized = Img_drug*m
 Img_quantized = ceiling(Img_quantized)
 Img_quantized = medianFilterR(Img_quantized)

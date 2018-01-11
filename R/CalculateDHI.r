@@ -19,7 +19,6 @@
 #' }
 #' @return DHI value for given drug ms file
 #' @author Mridula Prasad \email{mridula.prasad@fmach.it}
-#' @seealso \code{\link{PreprocessingMSI}}
 #' @references \url{https://github.com/pietrofranceschi/HomogenMSI}
 #' @examples
 #' ## load package
@@ -41,7 +40,8 @@
 #' @export
 #'
 
-suppressMessages(library("radiomics"))
+suppressMessages(library("spatstat"))
+suppressMessages(library("reshape2"))
 
 ##### calculate DHI value from given MSI data
 
@@ -56,9 +56,37 @@ CalculateDHI <- function(drugImg,maskImg,QuantLevel=0,Nu=1)
   drugImg = drugImg*m
   }
   drugImg= maskImg * drugImg
-
-  szm = glszm(drugImg)
-  szm = szm@.Data
+  
+  # unique number of gray levels in image
+  grey_lvls <- unique(c(drugImg))
+  grey_lvls <- grey_lvls[!is.na(grey_lvls)]
+   
+   #convert to data for use with spatstats functions
+  ImgMat = spatstat::as.im(drugImg)
+  #Initialize dataframe to hold count data
+  szm <- data.frame()
+  
+   for(i in grey_lvls)
+	 {
+              # Threshold the data
+              imBinary <- spatstat::levelset(ImgMat, i, compare="==")
+              connections <- spatstat::connected(imBinary)
+              
+              # Extract counts of each uniqe value 
+              counts <- table(table(as.matrix(connections)))
+              szm <- rbind(szm, data.frame(i, counts))
+            }
+			
+	#Clean up names 
+    colnames(szm) <- c("greylvl", "size", "counts")
+    #cast to matrix
+    szm <- reshape2::acast(szm, greylvl~size, value.var="counts")
+    #sort columns, if there is only a single size a vector is returned, hence the if
+    if(length(colnames(szm)) > 1 && nrow(szm) > 1){
+         szm <- szm[,order(as.numeric(as.character(colnames(szm))))]
+        }
+  szm[is.na(szm)] <- 0		
+  szm <- szm[,which(colSums(szm)>0)]
   szm = szm[-1,]   ### Removing sz values for the background of image
   szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
   szv = as.numeric(colnames(szm))

@@ -1,7 +1,8 @@
 Package: HomogenMSI
 Title: Calculate drug homogeneity value for MSI data 
 Version: 0.1.0
-Depends: R (>= 3.1.0),radiomics 
+Depends: R (>= 3.1.0)
+Imports: spatstat, reshape2
 Author(s): c(person("Mridula","Prasad",role=c("aut","cre"),email="mridula.prasad@fmach.it"),person("Pietro","Franceschi"),role="auth",email="pietro.franceschi@fmach.it")
 Maintainer: Mridula Prasad <mridula.prasad@fmach.it>
 Description: A complete analysis pipeline for drug homogeneity index calculation from matrix-assisted laser desorption/ionization(MALDI)-mass spectrometry imaging (MSI) data. Other additional data preprocessing functions are also included, such as peak selection, derivation of drug and other ion images at user defined mass range, median filtering, thresholding. 

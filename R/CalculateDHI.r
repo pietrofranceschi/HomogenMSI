@@ -1,19 +1,19 @@
 #' Calculate DHI value for drug MSI data
 #'
 #' @name CalculateDHI
-#' @description This function calculates the DHI value for drug MSI data.
-#' @usage CalculateDHI(drug_csvfilepath,mask_csvfilepath,QuantLevel=32,Nu=1)
+#' @description This function calculates the DHI value for the drug image derived from MSI data.
+#' @usage CalculateDHI(drugImg,maskImg,QuantLevel=0,Nu=1)
 #' @param
-#' @param  drug_csvfilepath  path of drug ion image file (csv format)
-#' @param  mask_csvfilepath  path of tissue masked file (csv format)
-#' @param  QuantLevel  Maximum possible gray-levels in drug ion image. default = 32
+#' @param  drugImg  Input data matrix of drug ion image
+#' @param  maskImg Input data matrix of tissue masked image
+#' @param  QuantLevel  Maximum possible gray-levels in drug ion image. default =0, i.e., original image
 #' @param Nu  Lowest size-zone value used for DHI calculation. default = 1
 #'
 #' @details
 #' The algorithm is based on the following workflow:
 #' \enumerate{
 #' \item Derive new quantized drug image at user-defined qunatization value.
-#' \item Derive gray-level size-zone matrix (GLSZM) for new drug quantized image (default value =32).
+#' \item Derive gray-level size-zone matrix (GLSZM) for new drug quantized image (default value =0).
 #' \item Derive homogeneous size-zone value from GLSZM at user-defined Nu value (default value =1).
 #' \item Normalized overall value with complete tumor area which is obtained from tumor mask file.
 #' }

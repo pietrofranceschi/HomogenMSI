@@ -1,12 +1,12 @@
 #' Calculate DHI value for drug MSI data
 #'
 #' @name CalculateDHI
-#' @description This function calculates the DHI value for the drug image derived from MSI data.
+#' @description This function calculates the DHI value for the drug image extracted from MSI data.
 #' @usage CalculateDHI(drugImg,maskImg,QuantLevel=0,Nu=1)
 #' @param
-#' @param  drugImg  Input data matrix of drug ion image
-#' @param  maskImg Input data matrix of tissue masked image
-#' @param  QuantLevel  Maximum possible gray-levels in drug ion image. default =0, i.e., original image
+#' @param  drugImg  Input matrix containing the pixel intensities
+#' @param  maskImg  Matrix identifying the pixels belonging to the tissue (1 tissue, 0 background). It must have the same size as drugImg
+#' @param  QuantLevel  Maximum possible gray-levels in drug ion image. default = 0, i.e., original image
 #' @param Nu  Lowest size-zone value used for DHI calculation. default = 1
 #'
 #' @details
@@ -52,32 +52,32 @@ CalculateDHI <- function(drugImg,maskImg,QuantLevel=0,Nu=1)
    {stop("dimensions of drug and mask image matrices are different")}
   if(QuantLevel !=0)
   {
-  m = QuantLevel/max(drugImg)
-  drugImg = drugImg*m
+  m = QuantLevel/max(drugImg)    ## should not be better to restrict to integer values???
+  drugImg = drugImg*m            ## is this right?
   }
   drugImg= maskImg * drugImg
-  
+
   # unique number of gray levels in image
   grey_lvls <- unique(c(drugImg))
   grey_lvls <- grey_lvls[!is.na(grey_lvls)]
-   
+
    #convert to data for use with spatstats functions
   ImgMat = spatstat::as.im(drugImg)
   #Initialize dataframe to hold count data
   szm <- data.frame()
-  
+
    for(i in grey_lvls)
 	 {
               # Threshold the data
               imBinary <- spatstat::levelset(ImgMat, i, compare="==")
               connections <- spatstat::connected(imBinary)
-              
-              # Extract counts of each uniqe value 
+
+              # Extract counts of each uniqe value
               counts <- table(table(as.matrix(connections)))
               szm <- rbind(szm, data.frame(i, counts))
             }
-			
-	#Clean up names 
+
+	#Clean up names
     colnames(szm) <- c("greylvl", "size", "counts")
     #cast to matrix
     szm <- reshape2::acast(szm, greylvl~size, value.var="counts")
@@ -85,7 +85,7 @@ CalculateDHI <- function(drugImg,maskImg,QuantLevel=0,Nu=1)
     if(length(colnames(szm)) > 1 && nrow(szm) > 1){
          szm <- szm[,order(as.numeric(as.character(colnames(szm))))]
         }
-  szm[is.na(szm)] <- 0		
+  szm[is.na(szm)] <- 0
   szm <- szm[,which(colSums(szm)>0)]
   szm = szm[-1,]   ### Removing sz values for the background of image
   szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]

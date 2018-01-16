@@ -1,4 +1,4 @@
 #'
 #' @name  HomogenMSI
-#' @docType pcakge
+#' @docType package
 NULL

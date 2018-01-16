@@ -1,6 +1,32 @@
 # homogenMSI
+This package provides a reference implementation of our algorithm for drug homogeneity assessment in a given MSI data. 
 
-This R package accompanies the article: Drug homogeneity index in mass spectrometry imaging. It provides a reference implementation of our algorithm for drug homogeneity assessment in a given MSI data. In addition, the data preprocessing steps discussed in our paper has also included here. 
+# Installation
+
+* Depends on
+
+```
+spatstat, reshape2
+```
+
+* Install devtools: in the R/R Studio shell type
+```{r}
+install.packages("devtools")
+```
+
+* Install homogenMSI: In the shell type
+```{r}
+library(devtools)
+install_github("pietrofranceschi/HomogenMSI", dependencies = TRUE) 
+```
+
+* Load the package: In shell type
+```{r}
+library(HomogenMSI)
+```
+******
+
+
 
 ## Contact
 

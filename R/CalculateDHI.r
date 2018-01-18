@@ -56,7 +56,7 @@ CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
   }
 
   ## If mask image is present, multiply it with drug image and estimate tumor area with it
-  if(!missing(maskImg ))
+  if(!missing(maskImg))
   {
     if((dim(drugImg)[1] != dim(maskImg)[1]) | (dim(drugImg)[2] != dim(maskImg)[2]))
     {stop("dimensions of drug and mask image matrices are different")}
@@ -109,7 +109,7 @@ CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
   DrugHomo = DrugHomo/sum(szm[,id])
 
   ## If mask image is given, final normalization with tumor area will performed
-  if(!missing(maskImg ))
+  if(!missing(maskImg))
   {
   DrugHomo = DrugHomo/TumorArea
   }

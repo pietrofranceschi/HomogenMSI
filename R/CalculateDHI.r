@@ -46,16 +46,26 @@ suppressMessages(library("reshape2"))
 ##### calculate DHI value from given MSI data
 
 
-CalculateDHI <- function(drugImg,maskImg,QuantLevel=0,Nu=1)
+CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
 {
- if((dim(drugImg)[1] != dim(maskImg)[1]) | (dim(drugImg)[2] != dim(maskImg)[2]))
-   {stop("dimensions of drug and mask image matrices are different")}
+  ## Quantized image for user-defined number of gray-levels
   if(QuantLevel !=0)
   {
-  m = QuantLevel/max(drugImg)    ## should not be better to restrict to integer values???
-  drugImg = drugImg*m            ## is this right?
+    m = QuantLevel/max(drugImg)    ## should not be better to restrict to integer values???
+    drugImg = drugImg*m            ## is this right?
   }
-  drugImg= maskImg * drugImg
+
+  ## If mask image is present, multiply it with drug image and estimate tumor area with it
+  if(!missing(maskImg ))
+  {
+    if((dim(drugImg)[1] != dim(maskImg)[1]) | (dim(drugImg)[2] != dim(maskImg)[2]))
+    {stop("dimensions of drug and mask image matrices are different")}
+
+    drugImg= maskImg * drugImg
+    TumorArea = table(maskImg)[[2]]
+
+  }
+
 
   # unique number of gray levels in image
   grey_lvls <- unique(c(drugImg))
@@ -97,8 +107,12 @@ CalculateDHI <- function(drugImg,maskImg,QuantLevel=0,Nu=1)
     DrugHomo = DrugHomo + (szv[id[j]]) * sum(szm[,id[j]])
   }
   DrugHomo = DrugHomo/sum(szm[,id])
-  TumorArea = table(maskImg)[[2]]
+
+  ## If mask image is given, final normalization with tumor area will performed
+  if(!missing(maskImg ))
+  {
   DrugHomo = DrugHomo/TumorArea
+  }
 
   return(DrugHomo)
 }

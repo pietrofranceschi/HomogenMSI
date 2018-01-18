@@ -51,8 +51,9 @@ CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
   ## Quantized image for user-defined number of gray-levels
   if(QuantLevel !=0)
   {
-    m = QuantLevel/max(drugImg)    ## should not be better to restrict to integer values???
-    drugImg = drugImg*m            ## is this right?
+    m = QuantLevel/max(drugImg)  
+    drugImg = round(drugImg,0)
+    drugImg = drugImg*m           
   }
 
   ## If mask image is present, multiply it with drug image and estimate tumor area with it

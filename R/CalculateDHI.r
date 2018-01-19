@@ -2,7 +2,7 @@
 #'
 #' @name CalculateDHI
 #' @description This function calculates the DHI value for the drug image extracted from MSI data.
-#' @usage CalculateDHI(drugImg,maskImg,QuantLevel=0,Nu=1)
+#' @usage CalculateDHI(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
 #' @param
 #' @param  drugImg  Input matrix containing the pixel intensities
 #' @param  maskImg  Matrix identifying the pixels belonging to the tissue (1 tissue, 0 background). It must have the same size as drugImg

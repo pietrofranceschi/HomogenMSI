@@ -10,3 +10,4 @@
 #' \item In scenario 4, all images are similar to the one in scenario 3 with added salt-pepper noise.
 #' }
 #' @export
+#'

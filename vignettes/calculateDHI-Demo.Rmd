@@ -1,0 +1,84 @@
+
+---
+title: "HomogenMSI"
+output:
+  html_document: default
+---
+
+# calculateDHI
+
+This function calculates the drug homogeneity index for a given MSI data, using the following formula: 
+$$DHI = \frac{\frac{\sum{i=1}^{Ng}  \sum{j=Nu}^{Nz} j.P(i,j)}{\sum{i=1}^{Ng} \sum{j=Nu}^ {Nz} P(i,j)}} {Tumor Area} $$
+Here, $P$          is the gray level size-zone matrix(GLSZM) <br/>
+      $Ng$         is number of gray levels/rows in GLSZM. <br/>
+      $Nz$         is number of size zones/columns in GLSZM. <br/>
+      $P(i,j)$     is the frequency for particular gray level $i$ occupided size zone $j$.<br/>
+      $j$          is the absolute size zone value.<br/>
+      $Tumor Area$ is the size of the tumor tissue.<br/>
+
+
+
+#### Derive DHI value from synthetic imaging datasets 
+
+```{r cars}
+library(HomogenMSI)
+data("DHIimages")
+drugImg = DHIimages[[20]]
+maskImg = DHIimages[[1]]
+maskImg[maskImg !=0] =1
+print(CalculateDHI(drugImg,maskImg))
+print(CalculateDHI(drugImg,maskImg,QuantLevel=0,Nu=5))
+
+
+```
+In similar way, DHI can be calculated for the rest of the images.<br>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r DHIcal,echo=FALSE}
+DHI = list(); maskImg = DHIimages[[1]]; maskImg[maskImg !=0] =1
+DHI[[1]] = 1; DHI[[2]] = CalculateDHI(DHIimages[[2]],maskImg); DHI[[3]] = CalculateDHI(DHIimages[[3]],maskImg)
+DHI[[4]] = CalculateDHI(DHIimages[[4]],maskImg); DHI[[5]] = CalculateDHI(DHIimages[[5]],maskImg)
+DHI[[6]] = CalculateDHI(DHIimages[[6]],maskImg);DHI[[7]] = CalculateDHI(DHIimages[[7]],maskImg)
+DHI[[8]] = CalculateDHI(DHIimages[[8]],maskImg);DHI[[9]] = CalculateDHI(DHIimages[[9]],maskImg)
+DHI[[10]] = CalculateDHI(DHIimages[[10]],maskImg);DHI[[11]] = CalculateDHI(DHIimages[[11]],maskImg)
+DHI[[12]] = CalculateDHI(DHIimages[[12]],maskImg);DHI[[13]] = CalculateDHI(DHIimages[[13]],maskImg)
+DHI[[14]] = CalculateDHI(DHIimages[[14]],maskImg);DHI[[15]] = CalculateDHI(DHIimages[[15]],maskImg)
+DHI[[16]] = CalculateDHI(DHIimages[[16]],maskImg);DHI[[17]] = CalculateDHI(DHIimages[[17]],maskImg)
+DHI[[18]] = CalculateDHI(DHIimages[[18]],maskImg);DHI[[19]] = CalculateDHI(DHIimages[[19]],maskImg)
+DHI[[20]] = CalculateDHI(DHIimages[[20]],maskImg)
+
+```
+
+```{r pressure,echo=FALSE, fig.height=8,fig.width=8}
+
+par(mfrow=c(5,4),tcl=-0.5,  mai=c(0.3,0.3,0.3,0.3))
+#par(mfrow=c(5,4))
+image(DHIimages[[1]],axes=FALSE, main = paste("DHI =", DHI[[1]],sep = "")); 
+image(DHIimages[[2]],axes=FALSE,main = paste("DHI =", DHI[[2]],sep = "") ); 
+image(DHIimages[[3]],axes=FALSE, main = paste("DHI =", round(DHI[[3]],4),sep = "")); 
+image(DHIimages[[4]],axes=FALSE, main = paste("DHI =", round(DHI[[4]],4),sep = "")); 
+image(DHIimages[[5]],axes=FALSE, main = paste("DHI =", round(DHI[[5]],4),sep = ""))
+image(DHIimages[[6]],axes=FALSE, main = paste("DHI =", round(DHI[[6]],4),sep = ""));
+image(DHIimages[[7]],axes=FALSE, main = paste("DHI =", round(DHI[[7]],4),sep = ""));
+image(DHIimages[[8]],axes=FALSE, main = paste("DHI =", round(DHI[[8]],4),sep = ""));
+image(DHIimages[[9]],axes=FALSE, main = paste("DHI =", round(DHI[[9]],4),sep = ""));
+image(DHIimages[[10]],axes=FALSE, main = paste("DHI =", round(DHI[[10]],4),sep = ""));
+image(DHIimages[[11]],axes=FALSE, main = paste("DHI =", round(DHI[[11]],4),sep = ""));
+image(DHIimages[[12]],axes=FALSE, main = paste("DHI =", round(DHI[[12]],4),sep = ""));
+image(DHIimages[[13]],axes=FALSE, main = paste("DHI =", round(DHI[[13]],4),sep = ""));
+image(DHIimages[[14]],axes=FALSE, main = paste("DHI =", round(DHI[[14]],4),sep = ""));
+image(DHIimages[[15]],axes=FALSE, main = paste("DHI =", round(DHI[[15]],4),sep = ""))
+image(DHIimages[[16]],axes=FALSE, main = paste("DHI =", round(DHI[[16]],4),sep = ""));
+image(DHIimages[[17]],axes=FALSE, main = paste("DHI =", round(DHI[[17]],4),sep = ""));
+image(DHIimages[[18]],axes=FALSE, main = paste("DHI =", round(DHI[[18]],4),sep = ""));
+image(DHIimages[[19]],axes=FALSE, main = paste("DHI =", round(DHI[[19]],4),sep = ""));
+image(DHIimages[[20]],axes=FALSE, main = paste("DHI =", round(DHI[[20]],4),sep = ""))
+
+```
+
+Note: our DHI formula will not work for image 1, as only single gray level present.

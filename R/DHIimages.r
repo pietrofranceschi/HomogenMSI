@@ -9,3 +9,4 @@
 #' \item In scenarios 2 and 3, similar images contain 2 and 4 gray levels, respectively.
 #' \item In scenario 4, all images are similar to the one in scenario 3 with added salt-pepper noise.
 #' }
+#' @export

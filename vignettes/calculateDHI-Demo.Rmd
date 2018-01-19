@@ -1,21 +1,20 @@
----
-title: "CalclulateDHI"
 
-output: pdf_document
+---
+title: "HomogenMSI"
+output:
+  html_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+# calculateDHI
 
 This function calculates the drug homogeneity index for a given MSI data, using the following formula: 
 $$DHI = \frac{\frac{\sum{i=1}^{Ng}  \sum{j=Nu}^{Nz} j.P(i,j)}{\sum{i=1}^{Ng} \sum{j=Nu}^ {Nz} P(i,j)}} {Tumor Area} $$
-Here, $P$          is the gray level size-zone matrix(GLSZM) <br>
-      $Ng$         is number of gray levels/rows in GLSZM. <br>
-      $Nz$         is number of size zones/columns in GLSZM. <br>
-      $P(i,j)$     is the frequency for particular gray level $i$ occupided size zone $j$.<br>
-      $j$          is the absolute size zone value.<br>
-      $Tumor Area$ is the size of the tumor tissue.<br>
+Here, $P$          is the gray level size-zone matrix(GLSZM) <br/>
+      $Ng$         is number of gray levels/rows in GLSZM. <br/>
+      $Nz$         is number of size zones/columns in GLSZM. <br/>
+      $P(i,j)$     is the frequency for particular gray level $i$ occupided size zone $j$.<br/>
+      $j$          is the absolute size zone value.<br/>
+      $Tumor Area$ is the size of the tumor tissue.<br/>
 
 
 
@@ -32,7 +31,12 @@ print(CalculateDHI(drugImg,maskImg,QuantLevel=0,Nu=5))
 
 
 ```
-In similar way, DHI was calculated for the rest of the image.<br>
+In similar way, DHI can be calculated for the rest of the images.<br>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 
 
 ```{r DHIcal,echo=FALSE}
@@ -50,9 +54,10 @@ DHI[[20]] = CalculateDHI(DHIimages[[20]],maskImg)
 
 ```
 
-```{r pressure,echo=FALSE}
+```{r pressure,echo=FALSE, fig.height=8,fig.width=8}
 
 par(mfrow=c(5,4),tcl=-0.5,  mai=c(0.3,0.3,0.3,0.3))
+#par(mfrow=c(5,4))
 image(DHIimages[[1]],axes=FALSE, main = paste("DHI =", DHI[[1]],sep = "")); 
 image(DHIimages[[2]],axes=FALSE,main = paste("DHI =", DHI[[2]],sep = "") ); 
 image(DHIimages[[3]],axes=FALSE, main = paste("DHI =", round(DHI[[3]],4),sep = "")); 

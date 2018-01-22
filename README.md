@@ -18,6 +18,12 @@ install.packages("devtools")
 library(devtools)
 install_github("pietrofranceschi/HomogenMSI", dependencies = TRUE) 
 ```
+To additionally build the vignette the previous command should include `build_vignettes = TRUE`
+
+```{r}
+library(devtools)
+install_github("pietrofranceschi/HomogenMSI", dependencies = TRUE, build_vignettes = TRUE) 
+```
 
 * Load the package: In shell type
 ```{r}

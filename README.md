@@ -1,5 +1,5 @@
 # HomogenMSI
-This package provides a reference implementation of our algorithm for drug homogeneity assessment in a given MSI data. 
+This package provides a reference implementation of our algorithm for drug homogeneity assessment in ion images extracted from MSI datasets. 
 
 # Installation
 

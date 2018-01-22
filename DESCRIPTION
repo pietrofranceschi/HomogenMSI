@@ -3,11 +3,14 @@ Title: Calculate drug homogeneity value for MSI data
 Version: 0.1.0
 Depends: R (>= 3.1.0)
 Imports: spatstat, reshape2
-Author(s): c(person("Mridula","Prasad",role=c("aut","cre"),email="mridula.prasad@fmach.it"),person("Pietro","Franceschi"),role="auth",email="pietro.franceschi@fmach.it")
+Author: c(person("Mridula","Prasad",role=c("aut","cre"),email="mridula.prasad@fmach.it"),person("Pietro","Franceschi"),role="auth",email="pietro.franceschi@fmach.it")
 Maintainer: Mridula Prasad <mridula.prasad@fmach.it>
 Description: The package implements a new algorithm based on GLSZM (Gray Level Size Zone Matrix) for the automatic assessment of homogeneity on tissue images produced in Mass Spectrometry Imaging experiments 
 URL: https://github.com/pietrofranceschi/HomogenMSI
-Licence: GPL-3
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

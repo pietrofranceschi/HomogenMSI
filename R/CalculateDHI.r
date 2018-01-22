@@ -3,7 +3,6 @@
 #' @name CalculateDHI
 #' @description This function calculates the DHI value for the drug image extracted from MSI data.
 #' @usage CalculateDHI(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
-#' @param
 #' @param  drugImg  Input matrix containing the pixel intensities
 #' @param  maskImg  Matrix identifying the pixels belonging to the tissue (1 tissue, 0 background). It must have the same size as drugImg
 #' @param  QuantLevel  Maximum possible gray-levels in drug ion image. default = 0, i.e., original image
@@ -51,9 +50,10 @@ CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
   ## Quantized image for user-defined number of gray-levels
   if(QuantLevel !=0)
   {
-    m = QuantLevel/max(drugImg)  
+    m = QuantLevel/max(drugImg)
+    drugImg = drugImg*m
     drugImg = round(drugImg,0)
-    drugImg = drugImg*m           
+
   }
 
   ## If mask image is present, multiply it with drug image and estimate tumor area with it

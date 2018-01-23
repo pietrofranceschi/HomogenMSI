@@ -2,7 +2,7 @@
 #'
 #' @name CalculateDHI
 #' @description This function calculates the DHI value for the drug image extracted from MSI data.
-#' @usage CalculateDHI(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
+#' @usage CalculateDHI(drugImg,Nu=1,QuantLevel=NULL,maskImg=NULL)
 #' @param  drugImg  Input matrix containing the pixel intensities
 #' @param  maskImg  Matrix identifying the pixels belonging to the tissue (1 tissue, 0 background). It must have the same size as drugImg
 #' @param  QuantLevel  Maximum possible gray-levels in drug ion image. default = 0, i.e., original image
@@ -40,15 +40,12 @@
 #'
 
 suppressMessages(library("spatstat"))
-suppressMessages(library("reshape2"))
-
-##### calculate DHI value from given MSI data
 
 
-CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
+CalculateDHI <- function(drugImg,Nu=1,QuantLevel=NULL,maskImg=NULL)
 {
-  ## Quantized image for user-defined number of gray-levels
-  if(QuantLevel !=0)
+  ## Quantize image to the user-defined number of gray-levels
+  if(!missing(QuantLevel))
   {
     m = QuantLevel/max(drugImg)
     drugImg = drugImg*m
@@ -56,7 +53,7 @@ CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
 
   }
 
-  ## If mask image is present, multiply it with drug image and estimate tumor area with it
+  ## If a mask  is present, multiply it with drug image and estimate tumor area, otherwise set the tumor area to the image size
   if(!missing(maskImg))
   {
     if((dim(drugImg)[1] != dim(maskImg)[1]) | (dim(drugImg)[2] != dim(maskImg)[2]))
@@ -65,55 +62,62 @@ CalculateDHI <- function(drugImg,QuantLevel=0,Nu=1,maskImg=NULL)
     drugImg= maskImg * drugImg
     TumorArea = table(maskImg)[[2]]
 
+  } else {
+    TumorArea <-  length(drugImg)
   }
 
-
+  ## Additional chech: if there are only zeroes stop and return a warning
+  if(all(drugImg == 0)){
+    stop( "The image contains only zeroes" )
+  }
+  
+  
   # unique number of gray levels in image
   grey_lvls <- unique(c(drugImg))
+  ## keep only non NAs
   grey_lvls <- grey_lvls[!is.na(grey_lvls)]
 
-   #convert to data for use with spatstats functions
+  #convert to data for use with spatstats functions
   ImgMat = spatstat::as.im(drugImg)
-  #Initialize dataframe to hold count data
-  szm <- data.frame()
-
-   for(i in grey_lvls)
-	 {
-              # Threshold the data
-              imBinary <- spatstat::levelset(ImgMat, i, compare="==")
-              connections <- spatstat::connected(imBinary)
-
-              # Extract counts of each uniqe value
-              counts <- table(table(as.matrix(connections)))
-              szm <- rbind(szm, data.frame(i, counts))
-            }
-
-	#Clean up names
-    colnames(szm) <- c("greylvl", "size", "counts")
-    #cast to matrix
-    szm <- reshape2::acast(szm, greylvl~size, value.var="counts")
-    #sort columns, if there is only a single size a vector is returned, hence the if
-    if(length(colnames(szm)) > 1 && nrow(szm) > 1){
-         szm <- szm[,order(as.numeric(as.character(colnames(szm))))]
-        }
-  szm[is.na(szm)] <- 0
-  szm <- szm[,which(colSums(szm)>0)]
-  szm = szm[-1,]   ### Removing sz values for the background of image
-  szm = szm[,-as.numeric(which(colSums(szm) ==0 ))]
-  szv = as.numeric(colnames(szm))
-  id = which(szv >= Nu)
-  DrugHomo = 0
-  for(j in 1:length(id))
-  {
-    DrugHomo = DrugHomo + (szv[id[j]]) * sum(szm[,id[j]])
+  
+  szmlist <- do.call(rbind,lapply(grey_lvls, function(l){
+    imBinary <- spatstat::levelset(ImgMat, l, compare="==")
+    connections <- spatstat::connected(imBinary)
+    counts <- table(as.matrix(connections))
+    out <- data.frame("grl" = l,
+                      "size" = as.matrix(counts))
+    return(out)
+  }))
+  
+  rownames(szmlist) <- NULL
+  
+  ## initialize the glszm
+  glszm <- matrix(0,
+                 nrow = length(unique(szmlist$grl)), 
+                 ncol = length(unique(szmlist$size)))
+  rownames(glszm) <- unique(szmlist$grl)
+  colnames(glszm) <- sort(unique(szmlist$size))
+  
+  ## fill ir with the numbers
+  for (i in 1:nrow(szmlist)){
+    indices <- as.character(szmlist[i,])
+    glszm[indices[1],indices[2]] <- glszm[indices[1],indices[2]] + 1
   }
-  DrugHomo = DrugHomo/sum(szm[,id])
-
-  ## If mask image is given, final normalization with tumor area will performed
-  if(!missing(maskImg))
-  {
-  DrugHomo = DrugHomo/TumorArea
-  }
-
-  return(DrugHomo)
+  
+  ## Remove zeroes
+  glszm <-  glszm[!rownames(glszm) == "0",, drop = FALSE]   
+  glszm <-  glszm[,!colSums(glszm) == 0, drop = FALSE]
+  
+  ## Calculate the DHI
+  szv <-  as.numeric(colnames(glszm))
+  idin <- szv >= Nu
+  
+  DHI <- sum(glszm[,idin] %*% szv[idin])/sum(glszm[,idin])
+  DHI <- DHI/TumorArea
+  
+  return(DHI)
 }
+
+
+
+

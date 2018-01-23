@@ -12,19 +12,19 @@ vignette: >
 
 The **HomogenMSI** package contains the function to calculate the DHI index which can be used to assess homogeneity ion images extracted from Mass Spectrometry Imaging datasets. DHI is defined starting from the Gray Level Size Zone Matrix with the following formula:
 
- $$DHI = \frac{ \frac{\sum_{i=1}^Ng \sum_{j=Nu}^Nz j P(i,j)}{\sum_{i=1}^Ng \sum_{j=Nu}^Nz P(i,j)}}{Tumor Area}$$
+ $$DHI = \frac{\sum\limits_{i=1}^{Ng} \sum\limits_{j=Nu}^{Nz} j P(i,j)}{\sum\limits_{i=1}^{Ng} \sum\limits_{j=Nu}^{Nz} P(i,j)}\frac{1}{Tumor Area}$$
 
 In the previous formula
 
 * $P$ is the gray level size-zone matrix (GLSZM)
 * $Ng$ is number of gray levels/rows in GLSZM
 * $Nz$ is number of size zones/columns in GLSZM
-* $P(i,j)$ is the frequency for particular gray level $i$ occupying the size zone $j$
-* $j$ is the absolute size zone value
+* $P(i,j)$ is the number of occurrences of a zone of size $j$ with a gray level $i$
+* $j$ is the absolute size of the $j^{th}$ zone
 * $Tumor Area$ is the size of the tumor tissue in pixels
 
 The use of the package will be demonstrated on the set of synthetic images included in the distribution. Briefly, 5 basic images which simulate
-"real life"" experimental distributions are modified in four ways in order to change th degree of homogeneity.
+"real life"" experimental distributions are modified in four ways in order to change their degree of homogeneity.
 
 ```{r}
 library(HomogenMSI)
@@ -37,10 +37,10 @@ As an example of the prototype images let's consider the image number 6
 
 ```{r}
 ## define a custom palette 
-my.colors <- colorRampPalette(c("gray80", "blue"))
+my.colors <- colorRampPalette(c("gray90", "blue3"))
 
 
-image(DHIimages[[20]],
+image(DHIimages[[6]],
       axes=FALSE, 
       main = "Synthetic image #6",
       col = my.colors(10),
@@ -48,28 +48,59 @@ image(DHIimages[[20]],
       )
 ```
 
+Here a circular tissue section (in blue) with four gray levels has a circular hole on the inside. The gray areas identify the "outside" of the tissue. 
 
-Here a circular tissue section (in red) with four gray levels has a circular hole on the inside. The gray areas identify the "outside" of the tissue. 
+To calculate DHI for this image it is first of all necessary to identify the pixels belonging to the tissue and separate them from the background. This "tissue mask" has then to be passed to the `CalculateDHI()` function. In our specific case, the background of all synthetic images can be identified selecting the pixel of the first image with zero intensity. 
 
-To calculate DHI for a given image it is first of all necessary to identify the pixels belonging to the tisse and separate them from the background. The "tissue mask" has then to be passed to the `CalculateDHI()` function. In our specific case, the background of the synthetic images can be identified selecting the pixel of the first image with zero intensity. The calculation of DHI is then strightforward. 
+```{r}
+image(DHIimages[[1]],
+      axes=FALSE, 
+      main = "Synthetic image #1",
+      col = my.colors(10),
+      asp = 1
+      )
+```
+
+The mask is then identified with 
 
 ```{r}
 ## get the fist image and set to 1 the pixels in the tissue
 maskImg = DHIimages[[1]]
 maskImg[maskImg !=0] =1
 
-## Get image 
-drugImg = DHIimages[[20]]
-
-## calculate DHI
-print(CalculateDHI(drugImg,maskImg= maskImg))
 ```
 
-Due to known technological limitations, pixel to pixel variability is often present in MSI dataset. This phenomenon can easily bias the homogeneity assesment because this "technical" variability will have a strong impact on DHI. To compensate for that `CalculateDHI()` is equooed with an additional parameter `Nu` which sets the minimum size of a "zone" to be included in the index calculation. The effect of the choice of this parameter on the synthetic image #20 can be visualized as follows
+The calculation of DHI is then straightforward 
+
+```{r}
+## calculate DHI
+print(CalculateDHI(DHIimages[[6]],maskImg=maskImg))
+```
+
+The image #1 is fully homogeneous, the expected DHI value should then be 1.
+
+```{r}
+## calculate DHI
+print(CalculateDHI(DHIimages[[1]],maskImg=maskImg))
+```
+
+Due to known technological limitations, pixel to pixel variability is often present in MSI datasets. This phenomenon can easily bias the homogeneity assessment because this small scale variability can make the total "weight" of GLSZM too big. To compensate for that `CalculateDHI()` is equipped with an additional parameter `Nu` which sets the minimum size of a zone to be included in the index calculation. In order to illustrate this effect, salt and pepper noise was added in a group of synthetic images
+
+```{r}
+image(DHIimages[[20]],
+      axes=FALSE, 
+      main = "Synthetic image #20",
+      col = my.colors(10),
+      asp = 1
+      )
+```
+
+The effect of a different choice of the `Nu` parameter on the homogeneity assessment of this image can be visualized as follows
 
 ```{r fig.height=4, fig.width=5}
+
 ## perform the calculation
-DHIs <- sapply(1:10, function(n) CalculateDHI(drugImg,maskImg= maskImg, Nu = n))
+DHIs <- sapply(1:10, function(n) CalculateDHI(DHIimages[[20]],maskImg=maskImg, Nu=n))
 
 ## plot the outcomes
 plot(DHIs,
@@ -82,15 +113,14 @@ plot(DHIs,
 
 The previous plot shows that in presence of salt and pepper noise, DHI stabilizes with a Nu > than 6. 
 
-Applying iteratively the previous approache, the DHI can be calculate on the complete image dataset. The first image have to be excluded since it has only one gray level and it is then perfectly homogeneous 
+Applying iteratively the previous approach, the DHI can be calculate on the complete image dataset. The first image have to be excluded since it has only one gray level and it is then perfectly homogeneous 
 
 ```{r}
 ## calculate the index
-DHIfull <- lapply(2:20, function(x)  CalculateDHI(DHIimages[[x]],maskImg= maskImg, Nu = 5))
+DHIfull <- lapply(1:20, function(x)  round(CalculateDHI(DHIimages[[x]],maskImg= maskImg, Nu = 6),4))
 
-## set up a convenient textual representation and add 1 for the first image
-DHI <- c(1,unlist(DHIfull))
-matrix(DHI, ncol = 5)
+## matrix representation
+matrix(DHIfull, ncol = 4, byrow = TRUE)
 ```
 
 From the previous output it can be appreciated the decrease of homogeneity for all the images in the different scenarios. A final plot shows the images with the corresponding homogeneity indices
@@ -100,7 +130,7 @@ par(mfrow=c(5,4),
     mar = c(1, 0, 1, 0), oma = c(0, 0, 0, 0)) 
 
 for (i in 1:20){
-  image(DHIimages[[i]],axes=FALSE, main = paste("DHI =", round(DHI[[i]],4), sep = ""),
+  image(DHIimages[[i]],axes=FALSE, main = paste("DHI =", round(DHIfull[[i]],4), sep = ""),
       col = my.colors(10),
       asp = 1)
 }

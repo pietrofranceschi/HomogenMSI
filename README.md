@@ -6,14 +6,14 @@ This package provides a reference implementation of our algorithm for drug homog
 * Depends on
 
 ```
-spatstat, reshape2
+spatstat
 ```
 * Install devtools: in the R/R Studio shell type
 ```{r}
 install.packages("devtools")
 ```
 
-* Install homogenMSI: In the shell type
+* Install HomogenMSI: In the shell type
 ```{r}
 library(devtools)
 install_github("pietrofranceschi/HomogenMSI", dependencies = TRUE) 
@@ -29,13 +29,8 @@ install_github("pietrofranceschi/HomogenMSI", dependencies = TRUE, build_vignett
 ```{r}
 library(HomogenMSI)
 ```
-
 # Description
 For the deails see the package vignette
 
-
-
-
 ## Contact
-
 email: Mridula Prasad (<mridula.prasad@fmach.it>)

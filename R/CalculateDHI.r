@@ -31,10 +31,10 @@
 #' maskImg[maskImg !=0] =1
 #'
 #' #Calculate DHI with default input parameters
-#' print(CalculateDHI(drugImg,maskImg))
+#' print(CalculateDHI(drugImg,maskImg=maskImg))
 #'
 #' # calculate DHI with user-defined Nu value
-#' print(CalculateDHI(drugImg,maskImg,QuantLevel=0,Nu=5))
+#' print(CalculateDHI(drugImg,maskImg=maskImg,QuantLevel=0,Nu=5))
 #'
 #' @export
 #'

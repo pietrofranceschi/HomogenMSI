@@ -26,7 +26,7 @@
 #'
 #' ## Input drug and mask images
 #'
-#' drugImg = DHIimages[[2]]
+#' drugImg = DHIimages[[20]]
 #' maskImg = DHIimages[[1]]
 #' maskImg[maskImg !=0] =1
 #'

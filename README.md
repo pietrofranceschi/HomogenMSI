@@ -33,4 +33,4 @@ library(HomogenMSI)
 For the deails see the package vignette
 
 ## Contact
-email: Pietro Franceschi (<pietro.franceschi@fmach.it>)
+email: Mridula Prasad (<mridula.prasad@fmach.it>)

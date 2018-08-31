@@ -45,7 +45,7 @@ suppressMessages(library("spatstat"))
 CalculateDHI <- function(drugImg,Nu=1,QuantLevel=NULL,maskImg=NULL)
 {
   ## Quantize image to the user-defined number of gray-levels
-  if(!missing(QuantLevel))
+  if(!is.null(QuantLevel))
   {
     m = QuantLevel/max(drugImg)
     drugImg = drugImg*m
@@ -53,11 +53,13 @@ CalculateDHI <- function(drugImg,Nu=1,QuantLevel=NULL,maskImg=NULL)
 
   }
 
-  ## If a mask  is present, multiply it with drug image and estimate tumor area, otherwise set the tumor area to the image size
-  if(!missing(maskImg))
+  ## If a mask  is present, multiply it with drug image and estimate tumor area, 
+  ##  otherwise set the tumor area to the image size
+  if(!is.null(maskImg))
   {
-    if((dim(drugImg)[1] != dim(maskImg)[1]) | (dim(drugImg)[2] != dim(maskImg)[2]))
-    {stop("dimensions of drug and mask image matrices are different")}
+    if(!identical(dim(drugImg),dim(maskImg))){
+      stop("dimensions of drug and mask image matrices are different")
+      }
 
     drugImg= maskImg * drugImg
     TumorArea = table(maskImg)[[2]]
@@ -70,7 +72,6 @@ CalculateDHI <- function(drugImg,Nu=1,QuantLevel=NULL,maskImg=NULL)
   if(all(drugImg == 0)){
     stop( "The image contains only zeroes" )
   }
-  
   
   # unique number of gray levels in image
   grey_lvls <- unique(c(drugImg))
